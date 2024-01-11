@@ -6,7 +6,7 @@ import {ChatsList} from './src/ChatsList';
 export default function App() {
   return (
     <QueryClientProvider client={queryClient}>
-      <SafeAreaView style={styles.container}>
+      <SafeAreaView>
         <Text style={styles.platform}>
           Platform: {Platform.OS} (
           {Platform.OS === 'web' ? 'IndexedDB' : 'SQLite'})
@@ -19,13 +19,6 @@ export default function App() {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-    padding: 32,
-  },
   platform: {
     marginBottom: 32,
     fontWeight: 'bold',
