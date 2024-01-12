@@ -4,13 +4,24 @@ import type {Chat} from '../lib/types';
 export const getRecentChats = async () => {
   const now = performance.now();
   const response = await db.executeAsync(
-    `SELECT chats.*, messages.content AS last_message, users.email AS last_message_author_email 
-    FROM chats 
-    LEFT JOIN (
-      SELECT * FROM messages ORDER BY created_at DESC
-    ) messages ON chats.id = messages.chat_id
-    LEFT JOIN users ON messages.author_id = users.id
-    GROUP BY chats.id`,
+    `SELECT
+          chats.*,
+          messages.content AS last_message,
+          users.email AS last_message_author_email
+      FROM
+          chats
+      LEFT JOIN
+          messages ON chats.id = messages.chat_id
+      LEFT JOIN
+          users ON messages.author_id = users.id
+      WHERE
+          messages.created_at = (
+              SELECT MAX(created_at)
+              FROM messages
+              WHERE chat_id = chats.id
+          ) 
+      GROUP BY chats.id
+`,
   );
   const end = performance.now() - now;
   console.log(`[Recent chats] took ${Math.round(end)}ms`);
