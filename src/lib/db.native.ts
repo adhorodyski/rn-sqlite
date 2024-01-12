@@ -4,10 +4,13 @@ import {open} from '@op-engineering/op-sqlite';
 export const db = open({name: 'op-sqlite', location: ':memory:'});
 
 db.executeBatch([
+  // create tables
   ['CREATE TABLE IF NOT EXISTS chats (id INTEGER PRIMARY KEY, title TEXT)'],
   [
     'CREATE TABLE IF NOT EXISTS messages (id INTEGER PRIMARY KEY, chat_id INTEGER, content TEXT)',
   ],
+  // create indexes
+  ['CREATE INDEX IF NOT EXISTS idx_messages_chat_id ON messages (chat_id)'],
 ]);
 
 let insertions: [string, any[]][] = [];
