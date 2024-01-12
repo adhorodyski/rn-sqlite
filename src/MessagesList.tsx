@@ -1,5 +1,5 @@
-import {FlatList, StyleSheet, Text, TouchableOpacity} from 'react-native';
-import {useQuery} from '@tanstack/react-query';
+import {FlatList, Text, TouchableOpacity} from 'react-native';
+import {useSuspenseQuery} from '@tanstack/react-query';
 import {getChatMessages} from './queries/messages.native';
 import {messagesKeys} from './lib/keys';
 
@@ -8,7 +8,7 @@ interface Props {
 }
 
 export const MessagesList = ({chatId}: Props) => {
-  const messages = useQuery({
+  const messages = useSuspenseQuery({
     queryKey: messagesKeys.chat(chatId),
     queryFn: () => getChatMessages(chatId),
   });
@@ -17,7 +17,7 @@ export const MessagesList = ({chatId}: Props) => {
     <FlatList
       data={messages.data}
       renderItem={({item}) => (
-        <TouchableOpacity key={item.id} style={styles.item}>
+        <TouchableOpacity key={item.id} style={{padding: 16}}>
           <Text>
             {item.id}: {item.content}
           </Text>
@@ -26,9 +26,3 @@ export const MessagesList = ({chatId}: Props) => {
     />
   );
 };
-
-const styles = StyleSheet.create({
-  item: {
-    padding: 16,
-  },
-});
