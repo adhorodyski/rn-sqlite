@@ -15,6 +15,7 @@ export const MessagesList = ({chatId}: Props) => {
 
   return (
     <FlatList
+      inverted
       data={messages.data}
       renderItem={({item}) => (
         <TouchableOpacity key={item.id} style={{padding: 16}}>

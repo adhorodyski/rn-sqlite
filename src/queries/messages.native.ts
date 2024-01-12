@@ -4,7 +4,7 @@ import {Message} from '../lib/types';
 export const getChatMessages = async (chatId: number) => {
   const now = performance.now();
   const response = await db.executeAsync(
-    'SELECT * FROM messages WHERE chat_id = ?',
+    'SELECT * FROM messages WHERE chat_id = ? ORDER BY created_at DESC',
     [chatId],
   );
   const end = performance.now() - now;
