@@ -25,7 +25,12 @@ export const ChatsList = () => {
           <Text>{item.id}</Text>
           <View>
             <Text>{item.title}</Text>
-            <Text style={{color: 'gray'}}>{item.last_message}</Text>
+            <Text style={{color: 'gray'}}>
+              {item.last_message_author_email}
+            </Text>
+            <Text style={{color: 'blue', maxWidth: 300}}>
+              {item.last_message}
+            </Text>
           </View>
         </TouchableOpacity>
       )}
