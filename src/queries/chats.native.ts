@@ -7,8 +7,9 @@ export const getRecentChats = async () => {
 };
 
 export const getChat = async (id: number) => {
-  const response = await db.executeAsync('SELECT * FROM chats WHERE id = ?', [
-    id,
-  ]);
+  const response = await db.executeAsync(
+    'SELECT * FROM chats WHERE id = ? LIMIT 1',
+    [id],
+  );
   return response.rows?.item(0) as Chat;
 };

@@ -1,3 +1,4 @@
+import {Suspense} from 'react';
 import {Text, View} from 'react-native';
 import {useSuspenseQuery} from '@tanstack/react-query';
 import {getChat} from './queries/chats.native';
@@ -19,7 +20,9 @@ export const ChatScreen = ({route: {params}}: Props) => {
     <View>
       <Text style={{fontWeight: 'bold'}}>{chat.data.title}</Text>
 
-      <MessagesList chatId={chat.data.id} />
+      <Suspense fallback={<Text>Loading messages...</Text>}>
+        <MessagesList chatId={chat.data.id} />
+      </Suspense>
 
       <CreateMessageForm chatId={chat.data.id} />
     </View>
