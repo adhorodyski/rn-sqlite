@@ -1,10 +1,11 @@
-import {useQuery} from '@tanstack/react-query';
 import {Text, View} from 'react-native';
+import {useQuery} from '@tanstack/react-query';
 import {getChat} from './queries/chats.native';
 import {chatsKeys} from './lib/keys';
 import type {RootStackParamList} from './RootStack';
 import type {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {MessagesList} from './MessagesList';
+import {CreateMessageForm} from './CreateMessageForm';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Chat'>;
 
@@ -22,7 +23,9 @@ export const ChatScreen = ({route: {params}}: Props) => {
     <View>
       <Text style={{fontWeight: 'bold'}}>{chat.data.title}</Text>
 
-      <MessagesList chatId={params.chatId} />
+      <MessagesList chatId={chat.data.id} />
+
+      <CreateMessageForm chatId={chat.data.id} />
     </View>
   );
 };
