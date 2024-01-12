@@ -17,6 +17,7 @@ export const CreateMessageForm = ({chatId}: Props) => {
     mutationFn: createMessage,
     onSuccess: () => {
       queryClient.invalidateQueries({queryKey: messagesKeys.chat(chatId)});
+      setContent('');
     },
   });
 
