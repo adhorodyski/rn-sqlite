@@ -1,26 +1,14 @@
-import {StyleSheet, Text, Platform, SafeAreaView} from 'react-native';
+import {NavigationContainer} from '@react-navigation/native';
 import {QueryClientProvider} from '@tanstack/react-query';
 import {queryClient} from './src/lib/queryClient';
-import {ChatsList} from './src/ChatsList';
+import {RootStack} from './src/RootStack';
 
 export default function App() {
   return (
-    <QueryClientProvider client={queryClient}>
-      <SafeAreaView>
-        <Text style={styles.platform}>
-          Platform: {Platform.OS} (
-          {Platform.OS === 'web' ? 'IndexedDB' : 'SQLite'})
-        </Text>
-
-        <ChatsList />
-      </SafeAreaView>
-    </QueryClientProvider>
+    <NavigationContainer>
+      <QueryClientProvider client={queryClient}>
+        <RootStack />
+      </QueryClientProvider>
+    </NavigationContainer>
   );
 }
-
-const styles = StyleSheet.create({
-  platform: {
-    marginBottom: 32,
-    fontWeight: 'bold',
-  },
-});
