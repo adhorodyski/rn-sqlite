@@ -1,7 +1,9 @@
-import {FlatList, Text, TouchableOpacity} from 'react-native';
+import {FlatList, Text, TouchableOpacity, NativeModules} from 'react-native';
 import {useSuspenseQuery} from '@tanstack/react-query';
 import {getChatMessages} from './queries/messages.native';
 import {messagesKeys} from './lib/keys';
+
+const {CalendarModule} = NativeModules;
 
 interface Props {
   chatId: number;
@@ -18,7 +20,15 @@ export const MessagesList = ({chatId}: Props) => {
       inverted
       data={messages.data}
       renderItem={({item}) => (
-        <TouchableOpacity key={item.id} style={{padding: 16}}>
+        <TouchableOpacity
+          key={item.id}
+          style={{padding: 16}}
+          onPress={() => {
+            CalendarModule.createCalendarEvent(
+              item.id.toString(),
+              item.content,
+            );
+          }}>
           <Text>
             {item.id}: {item.content}
           </Text>
