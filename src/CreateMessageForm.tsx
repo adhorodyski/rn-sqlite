@@ -1,5 +1,10 @@
 import {useState} from 'react';
-import {Text, TextInput, TouchableOpacity, View} from 'react-native';
+import {
+  KeyboardAvoidingView,
+  Text,
+  TextInput,
+  TouchableOpacity,
+} from 'react-native';
 import {useMutation} from '@tanstack/react-query';
 import {createMessage} from './mutations/messages.native';
 import {messagesKeys} from './lib/keys';
@@ -22,7 +27,7 @@ export const CreateMessageForm = ({chatId}: Props) => {
   });
 
   return (
-    <View style={{padding: 16}}>
+    <KeyboardAvoidingView style={{padding: 16}}>
       <TextInput
         value={content}
         onChangeText={setContent}
@@ -37,6 +42,6 @@ export const CreateMessageForm = ({chatId}: Props) => {
       <TouchableOpacity onPress={() => create.mutate({chatId, content})}>
         <Text>Send!</Text>
       </TouchableOpacity>
-    </View>
+    </KeyboardAvoidingView>
   );
 };

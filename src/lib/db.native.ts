@@ -14,12 +14,13 @@ db.executeBatch([
   ],
   // create indexes
   ['CREATE INDEX IF NOT EXISTS idx_messages_chat_id ON messages (chat_id)'],
+  ['CREATE INDEX IF NOT EXISTS idx_messages_author_id ON messages (author_id)'],
 ]);
 
 let insertions: [string, any[]][] = [];
 
 const MAX_CHATS = 2000;
-const MAX_MESSAGES = 8;
+const MAX_MESSAGES = 48;
 
 /**
  * This seeds the database with <MAX_CHATS> chats and <MAX_MESSAGES> messages per chat.

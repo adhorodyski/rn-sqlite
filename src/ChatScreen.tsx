@@ -17,8 +17,11 @@ export const ChatScreen = ({route: {params}}: Props) => {
   });
 
   return (
-    <View>
-      <Text style={{fontWeight: 'bold'}}>{chat.data.title}</Text>
+    <View style={{maxHeight: '100%'}}>
+      <Text
+        style={{fontWeight: 'bold', paddingHorizontal: 16, paddingVertical: 8}}>
+        {chat.data.title}
+      </Text>
 
       <Suspense fallback={<Text>Loading messages...</Text>}>
         <MessagesList chatId={chat.data.id} />
