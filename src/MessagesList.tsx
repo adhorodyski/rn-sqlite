@@ -1,9 +1,8 @@
-import {FlatList, Text, TouchableOpacity, NativeModules} from 'react-native';
+import {FlatList, Text, TouchableOpacity} from 'react-native';
 import {useSuspenseQuery} from '@tanstack/react-query';
 import {getChatMessages} from './queries/messages.native';
 import {messagesKeys} from './lib/keys';
-
-const {CalendarModule} = NativeModules;
+import CalendarModule from './lib/calendarModule';
 
 interface Props {
   chatId: number;
