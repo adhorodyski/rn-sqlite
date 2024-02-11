@@ -18,4 +18,9 @@ RCT_EXPORT_METHOD(createCalendarEvent:(NSString *)name content:(NSString *)conte
   RCTLogInfo(@"Pretending to create an event %@ at %@", name, content);
 }
 
+- (NSDictionary *)constantsToExport 
+{
+  return @{ @"DEFAULT_EVENT_NAME": @"Message reminder" };
+}
+
 @end
