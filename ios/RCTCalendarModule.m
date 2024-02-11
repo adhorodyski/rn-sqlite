@@ -13,9 +13,21 @@
 
 RCT_EXPORT_MODULE()
 
-RCT_EXPORT_METHOD(createCalendarEvent:(NSString *)name content:(NSString *)content)
+RCT_EXPORT_METHOD(createCalendarEvent:(NSString *)name
+                  content:(NSString *)content
+                  resolver:(RCTPromiseResolveBlock)resolve
+                  rejected:(RCTPromiseRejectBlock)reject)
 {
-  RCTLogInfo(@"Pretending to create an event %@ at %@", name, content);
+  NSString *eventId = [[NSUUID UUID] UUIDString];
+  
+  if (!eventId) {
+    reject(@"Create an event", @"No eventId returned", nil);
+  }
+  
+  RCTLogInfo(@"[eventId: %@] Called craeteCalendarEvent with name %@ and content %@", eventId, name, content);
+  
+  resolve(eventId);
+  
 }
 
 - (NSDictionary *)constantsToExport 
