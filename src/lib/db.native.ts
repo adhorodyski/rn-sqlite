@@ -19,18 +19,24 @@ db.executeBatch([
 
 let insertions: [string, any[]][] = [];
 
-const MAX_CHATS = 2000;
+const MAX_USERS = 15_000;
+const MAX_CHATS = 2_000;
 const MAX_MESSAGES = 48;
+
+/**
+ * This seeds the database with <MAX_USERS> users.
+ */
+for (let i = 0; i < MAX_USERS; i++) {
+  insertions.push([
+    'INSERT INTO users (name, email) VALUES (?, ?)',
+    [faker.person.fullName(), faker.internet.email()],
+  ]);
+}
 
 /**
  * This seeds the database with <MAX_CHATS> chats and <MAX_MESSAGES> messages per chat.
  */
 for (let i = 0; i < MAX_CHATS; i++) {
-  insertions.push([
-    'INSERT INTO users (name, email) VALUES (?, ?)',
-    [faker.person.fullName(), faker.internet.email()],
-  ]);
-
   insertions.push([
     'INSERT INTO chats (title) VALUES (?)',
     ['#' + faker.lorem.word()],
@@ -45,4 +51,9 @@ for (let i = 0; i < MAX_CHATS; i++) {
 }
 
 const res = db.executeBatch(insertions);
-console.log(`Seeded ${res.rowsAffected} rows`);
+console.log(
+  `SQLite seeded with ${res.rowsAffected} rows: 
+  - ${MAX_USERS} users, 
+  - ${MAX_CHATS} chats,
+  - ${MAX_CHATS * MAX_MESSAGES} messages`,
+);

@@ -8,6 +8,6 @@ export const getChatMessages = async (chatId: number) => {
     [chatId],
   );
   const end = performance.now() - now;
-  console.log(`[Messages] took ${Math.round(end)}ms`);
+  console.log(`[Messages] took ${Math.round(end)}ms (chat_id: ${chatId})`);
   return response.rows?._array as Message[];
 };
