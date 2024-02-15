@@ -9,3 +9,8 @@ export interface Message {
   author_id: number;
   content: string;
 }
+
+export interface FeatureConfig {
+  name: string;
+  is_enabled: boolean;
+}

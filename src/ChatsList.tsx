@@ -1,11 +1,13 @@
-import {FlatList, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import {useSuspenseQuery} from '@tanstack/react-query';
-import {getRecentChats} from './queries/chats.native';
+import {FlatList, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {useFeatureToggle} from './featureProvider/useFeature';
 import {chatsKeys} from './lib/keys';
+import {getRecentChats} from './queries/chats.native';
 
 export const ChatsList = () => {
   const navigation = useNavigation();
+  const showChatListAvatar = useFeatureToggle('chat-list-avatar');
 
   const recentChats = useSuspenseQuery({
     queryKey: chatsKeys.all,
@@ -32,6 +34,7 @@ export const ChatsList = () => {
               {item.last_message}
             </Text>
           </View>
+          {showChatListAvatar && <View />}
         </TouchableOpacity>
       )}
     />

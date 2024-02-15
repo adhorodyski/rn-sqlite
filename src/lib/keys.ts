@@ -8,3 +8,7 @@ export const messagesKeys = {
   chat: (chatId: number) => ['messages', chatId],
   create: (chatId: number) => ['create-message', chatId] as const,
 };
+
+export const featuresKeys = {
+  all: ['features'] as const,
+};
