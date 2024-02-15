@@ -6,6 +6,7 @@ import {
   View,
   ViewStyle,
 } from 'react-native';
+import {useFeatureToggle} from '../../featureProvider/useFeature';
 import {AvatarSvg} from './AvatarSvg';
 
 const defaultInitials = '??';
@@ -33,6 +34,12 @@ export const Avatar = ({
   size,
   ...rest
 }: Props) => {
+  const showChatListAvatar = useFeatureToggle('chat-list-avatar');
+
+  if (!showChatListAvatar) {
+    return null;
+  }
+
   const shape = rest.shape ?? 'circle';
 
   const sizeStyle = styles[size] || styles.small;
