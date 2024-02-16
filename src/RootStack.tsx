@@ -22,9 +22,7 @@ export const HomeStack = () => (
 );
 
 export const RootStack = () => (
-  <Tab.Navigator
-    initialRouteName="Home"
-    screenOptions={{detachInactiveScreens: false}}>
+  <Tab.Navigator initialRouteName="Home" detachInactiveScreens={false}>
     <Tab.Screen
       name="Home"
       component={HomeStack}
