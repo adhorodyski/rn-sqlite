@@ -1,8 +1,11 @@
-import {FlatList, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import {useSuspenseQuery} from '@tanstack/react-query';
-import {getRecentChats} from './queries/chats.native';
+import React from 'react';
+import {FlatList, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {Avatar} from './components/Avatar';
+
 import {chatsKeys} from './lib/keys';
+import {getRecentChats} from './queries/chats.native';
 
 export const ChatsList = () => {
   const navigation = useNavigation();
@@ -22,6 +25,10 @@ export const ChatsList = () => {
           key={item.id}
           style={styles.item}
           onPress={() => navigation.navigate('Chat', {chatId: item.id})}>
+          <Avatar
+            size="small"
+            initials={parseEmail(item.last_message_author_email)}
+          />
           <Text>{item.id}</Text>
           <View>
             <Text>{item.title}</Text>
@@ -36,6 +43,13 @@ export const ChatsList = () => {
       )}
     />
   );
+};
+
+const parseEmail = (email: string | undefined) => {
+  const initials = (email ?? 'UN')
+    .replace(/^(\S{2})\S*$|(?:^|\s*)(\S)\S*\s*/g, '$1$2')
+    .toUpperCase();
+  return initials;
 };
 
 const styles = StyleSheet.create({
