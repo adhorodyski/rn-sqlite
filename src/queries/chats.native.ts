@@ -26,8 +26,7 @@ export const getRecentChats = async () => {
             WHERE chat_id = chats.id
         ) 
     GROUP BY chats.id
-    LIMIT 100
-`, // 100 is the hard limit to mimic pagination
+`,
   );
   const end = performance.now() - now;
   console.log(`[Recent chats] took ${Math.round(end)}ms`);
