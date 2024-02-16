@@ -22,7 +22,10 @@ export const HomeStack = () => (
 );
 
 export const RootStack = () => (
-  <Tab.Navigator initialRouteName="Home" detachInactiveScreens={false}>
+  <Tab.Navigator
+    initialRouteName="Home"
+    // TODO: import this from another module to hide it
+    detachInactiveScreens={false}>
     <Tab.Screen
       name="Home"
       component={HomeStack}
