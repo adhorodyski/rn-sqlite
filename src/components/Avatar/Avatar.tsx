@@ -34,12 +34,6 @@ export const Avatar = ({
   size,
   ...rest
 }: Props) => {
-  const showChatListAvatar = useFeatureToggle('chat-list-avatar');
-
-  if (!showChatListAvatar) {
-    return null;
-  }
-
   const shape = rest.shape ?? 'circle';
 
   const sizeStyle = styles[size] || styles.small;
@@ -50,16 +44,20 @@ export const Avatar = ({
   const borderWidth = rest.borderWidth ?? 0;
   const borderColor = rest.color || '#fff';
 
-  const handlePress = () => console.log('Pressed Avatar');
+  const disabled = rest.disabled;
 
-  const disabled = rest.disabled || handlePress == null;
+  const showChatListAvatar = useFeatureToggle('chat-list-avatar');
+
+  if (!showChatListAvatar) {
+    return null;
+  }
 
   return (
     <View style={[styles.container, style]}>
       <TouchableOpacity
         style={[sizeStyle]}
         disabled={disabled}
-        onPress={handlePress}>
+        onPress={() => console.log('Pressed Avatar')}>
         <AvatarSvg
           size={sizeStyle}
           borderRadius={borderRadius * 2}

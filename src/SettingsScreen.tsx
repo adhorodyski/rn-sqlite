@@ -25,7 +25,6 @@ export const SettingsScreen = () => {
     },
   });
 
-  console.log(showChatListAvatar, toggleValue);
   return (
     <View
       style={{
