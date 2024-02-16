@@ -11,4 +11,5 @@ export const messagesKeys = {
 
 export const featuresKeys = {
   all: ['features'] as const,
+  update: () => ['update-feature'] as const,
 };
