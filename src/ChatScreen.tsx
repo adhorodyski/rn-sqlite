@@ -1,4 +1,4 @@
-import {Suspense} from 'react';
+import {Suspense, useState} from 'react';
 import {Text, View} from 'react-native';
 import {useSuspenseQuery} from '@tanstack/react-query';
 import {getChat} from './queries/chats.native';
@@ -11,6 +11,7 @@ import {CreateMessageForm} from './CreateMessageForm';
 type Props = NativeStackScreenProps<RootStackParamList, 'Chat'>;
 
 export const ChatScreen = ({route: {params}}: Props) => {
+  const [message, setMessage] = useState('');
   const chat = useSuspenseQuery({
     queryKey: chatsKeys.one(params.chatId),
     queryFn: () => getChat(params.chatId),
@@ -27,7 +28,11 @@ export const ChatScreen = ({route: {params}}: Props) => {
         <MessagesList chatId={chat.data.id} />
       </Suspense>
 
-      <CreateMessageForm chatId={chat.data.id} />
+      <CreateMessageForm
+        chatId={chat.data.id}
+        message={message}
+        setMessage={setMessage}
+      />
     </View>
   );
 };

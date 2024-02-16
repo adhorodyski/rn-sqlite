@@ -1,4 +1,3 @@
-import {useState} from 'react';
 import {
   KeyboardAvoidingView,
   Text,
@@ -12,25 +11,25 @@ import {queryClient} from './lib/queryClient';
 
 interface Props {
   chatId: number;
+  message: string;
+  setMessage: (message: string) => void;
 }
 
-export const CreateMessageForm = ({chatId}: Props) => {
-  const [content, setContent] = useState('');
-
+export const CreateMessageForm = ({chatId, message, setMessage}: Props) => {
   const create = useMutation({
     mutationKey: messagesKeys.create(chatId),
     mutationFn: createMessage,
     onSuccess: () => {
       queryClient.invalidateQueries({queryKey: messagesKeys.chat(chatId)});
-      setContent('');
+      setMessage('');
     },
   });
 
   return (
     <KeyboardAvoidingView style={{padding: 16}}>
       <TextInput
-        value={content}
-        onChangeText={setContent}
+        value={message}
+        onChangeText={setMessage}
         placeholder="Type a message..."
         style={{
           backgroundColor: 'white',
@@ -39,7 +38,8 @@ export const CreateMessageForm = ({chatId}: Props) => {
         }}
       />
 
-      <TouchableOpacity onPress={() => create.mutate({chatId, content})}>
+      <TouchableOpacity
+        onPress={() => create.mutate({chatId, content: message})}>
         <Text>Send!</Text>
       </TouchableOpacity>
     </KeyboardAvoidingView>
