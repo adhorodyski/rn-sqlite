@@ -7,7 +7,6 @@ interface ChatWithLastMessage extends Chat {
 }
 
 export const getRecentChats = async () => {
-  const now = performance.now();
   const response = await db.executeAsync(
     `SELECT
         chats.id,
@@ -29,17 +28,12 @@ export const getRecentChats = async () => {
     ORDER BY latest_message.latest_message_time DESC
 `,
   );
-  const end = performance.now() - now;
-  console.log(`[Recent chats] took ${Math.round(end)}ms`);
   return response.rows?._array as ChatWithLastMessage[];
 };
 
 export const getChat = async (id: number) => {
-  const now = performance.now();
   const response = await db.executeAsync('SELECT * FROM chats');
   const chats = response.rows?._array as Chat[];
   const chat = chats.find(chat => chat.id === id);
-  const end = performance.now() - now;
-  console.log(`[Chat] took ${Math.round(end)}ms (id: ${id})`);
   return chat;
 };
