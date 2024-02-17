@@ -26,8 +26,8 @@ db.executeBatch([
 let insertions: [string, any[]][] = [];
 
 const MAX_USERS = 100;
-const MAX_CHATS = 5_000;
-const MAX_MESSAGES = 22;
+const MAX_CHATS = 100;
+const MAX_MESSAGES = 6000;
 const MAX_FEATURES = 48;
 
 const random = (arr: any[]) => arr[Math.floor(Math.random() * arr.length)];
