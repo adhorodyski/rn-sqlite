@@ -8,6 +8,7 @@ export interface Message {
   chat_id: number;
   author_id: number;
   content: string;
+  created_at: string;
 }
 
 export interface FeatureConfig {

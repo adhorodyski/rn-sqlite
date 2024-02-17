@@ -1,13 +1,18 @@
 import {db} from '../lib/db.native';
-import {Message} from '../lib/types';
+import type {Message} from '../lib/types';
 
 export const getChatMessages = async (chatId: number) => {
-  const now = performance.now();
   const response = await db.executeAsync(
-    'SELECT * FROM messages WHERE chat_id = ? ORDER BY created_at DESC',
+    'SELECT * FROM messages WHERE chat_id = ?',
     [chatId],
   );
-  const end = performance.now() - now;
-  console.log(`[Messages] took ${Math.round(end)}ms (chat_id: ${chatId})`);
-  return response.rows?._array as Message[];
+
+  const messages = response.rows?._array as Message[];
+
+  // We sort the messages by created_at in descending order to show the most recent ones
+  const sortedMessages = messages.sort((a, b) =>
+    b.created_at.toLowerCase().localeCompare(a.created_at.toLowerCase()),
+  );
+
+  return sortedMessages;
 };
