@@ -29,9 +29,10 @@ export const ChatsList = () => {
             size="small"
             initials={parseEmail(item.last_message_author_email)}
           />
-          <Text>{item.id}</Text>
           <View>
-            <Text>{item.title}</Text>
+            <Text>
+              {item.title} {item.is_vip ? '(VIP)' : ''}
+            </Text>
             <Text style={{color: 'gray'}}>
               {item.last_message_author_email}
             </Text>

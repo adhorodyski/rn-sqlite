@@ -1,6 +1,7 @@
 export interface Chat {
   id: number;
   title: string;
+  is_vip: boolean;
 }
 
 export interface Message {

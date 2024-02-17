@@ -5,7 +5,9 @@ export const db = open({name: 'op-sqlite', location: ':memory:'});
 
 db.executeBatch([
   // create tables
-  ['CREATE TABLE IF NOT EXISTS chats (id INTEGER PRIMARY KEY, title TEXT)'],
+  [
+    'CREATE TABLE IF NOT EXISTS chats (id INTEGER PRIMARY KEY, title TEXT, is_vip INTEGER DEFAULT 0)',
+  ],
   [
     'CREATE TABLE IF NOT EXISTS messages (id INTEGER PRIMARY KEY, chat_id INTEGER NOT NULL, content TEXT, created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP, author_id INTEGER NOT NULL)',
   ],
@@ -52,8 +54,8 @@ for (let i = 0; i < MAX_USERS; i++) {
  */
 for (let i = 0; i < MAX_CHATS; i++) {
   insertions.push([
-    'INSERT INTO chats (title) VALUES (?)',
-    ['#' + random(words)],
+    'INSERT INTO chats (title, is_vip) VALUES (?, ?)',
+    ['#' + random(words), Math.random() > 0.5 ? 1 : 0],
   ]);
 
   for (let y = 0; y < MAX_MESSAGES; y++) {

@@ -11,6 +11,7 @@ export const getRecentChats = async () => {
     `SELECT
         chats.id,
         chats.title,
+        chats.is_vip,
         messages.content AS last_message,
         users.email AS last_message_author_email
     FROM
