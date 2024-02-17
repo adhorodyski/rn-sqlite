@@ -3,6 +3,7 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {ChatScreen} from './ChatScreen';
 import {ChatsScreen} from './ChatsScreen';
 import {SettingsScreen} from './SettingsScreen';
+import {shouldPersistViews} from './lib/navigationConfig';
 
 export type RootStackParamList = {
   Chats: undefined;
@@ -24,8 +25,7 @@ export const HomeStack = () => (
 export const RootStack = () => (
   <Tab.Navigator
     initialRouteName="Home"
-    // TODO: import this from another module to hide it
-    detachInactiveScreens={false}>
+    detachInactiveScreens={!shouldPersistViews}>
     <Tab.Screen
       name="Home"
       component={HomeStack}
