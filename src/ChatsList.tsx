@@ -11,7 +11,7 @@ export const ChatsList = () => {
   const navigation = useNavigation();
 
   const recentChats = useSuspenseQuery({
-    queryKey: chatsKeys.all,
+    queryKey: chatsKeys.recent,
     queryFn: getRecentChats,
   });
 

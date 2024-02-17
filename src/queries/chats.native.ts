@@ -24,8 +24,9 @@ export const getRecentChats = async () => {
             SELECT MAX(created_at)
             FROM messages
             WHERE chat_id = chats.id
-        ) 
-    GROUP BY chats.id
+        )
+      GROUP BY chats.id
+      ORDER BY messages.created_at DESC
 `,
   );
   const end = performance.now() - now;
@@ -35,11 +36,10 @@ export const getRecentChats = async () => {
 
 export const getChat = async (id: number) => {
   const now = performance.now();
-  const response = await db.executeAsync(
-    'SELECT * FROM chats WHERE id = ? LIMIT 1',
-    [id],
-  );
+  const response = await db.executeAsync('SELECT * FROM chats');
+  const chats = response.rows?._array as Chat[];
+  const chat = chats.find(chat => chat.id === id);
   const end = performance.now() - now;
   console.log(`[Chat] took ${Math.round(end)}ms (id: ${id})`);
-  return response.rows?.item(0) as Chat;
+  return chat;
 };

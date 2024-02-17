@@ -23,9 +23,16 @@ db.executeBatch([
 let insertions: [string, any[]][] = [];
 
 const MAX_USERS = 100;
-const MAX_CHATS = 500;
-const MAX_MESSAGES = 48;
+const MAX_CHATS = 5_000;
+const MAX_MESSAGES = 22;
 const MAX_FEATURES = 48;
+
+const random = (arr: any[]) => arr[Math.floor(Math.random() * arr.length)];
+
+const fullnames = Array.from({length: 20}, () => faker.person.fullName());
+const emails = Array.from({length: 20}, () => faker.internet.email());
+const sentences = Array.from({length: 20}, () => faker.lorem.sentence());
+const words = Array.from({length: 20}, () => faker.lorem.word());
 
 /**
  * This seeds the database with <MAX_USERS> users.
@@ -33,7 +40,7 @@ const MAX_FEATURES = 48;
 for (let i = 0; i < MAX_USERS; i++) {
   insertions.push([
     'INSERT INTO users (name, email) VALUES (?, ?)',
-    [faker.person.fullName(), faker.internet.email()],
+    [random(fullnames), random(emails)],
   ]);
 }
 
@@ -43,13 +50,13 @@ for (let i = 0; i < MAX_USERS; i++) {
 for (let i = 0; i < MAX_CHATS; i++) {
   insertions.push([
     'INSERT INTO chats (title) VALUES (?)',
-    ['#' + faker.lorem.word()],
+    ['#' + random(words)],
   ]);
 
   for (let y = 0; y < MAX_MESSAGES; y++) {
     insertions.push([
       'INSERT INTO messages (chat_id, content, author_id) VALUES (?, ?, ?)',
-      [i, faker.lorem.sentence(), i],
+      [i, random(sentences), Math.floor(Math.random() * MAX_USERS) + 1],
     ]);
   }
 }

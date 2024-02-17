@@ -1,6 +1,5 @@
 export const chatsKeys = {
   one: (id: number) => ['chats', id] as const,
-  all: ['chats'] as const,
   recent: ['chats', 'recent'] as const,
 };
 

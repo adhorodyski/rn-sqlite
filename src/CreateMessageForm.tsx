@@ -6,8 +6,9 @@ import {
 } from 'react-native';
 import {useMutation} from '@tanstack/react-query';
 import {createMessage} from './mutations/messages.native';
-import {messagesKeys} from './lib/keys';
+import {chatsKeys, messagesKeys} from './lib/keys';
 import {queryClient} from './lib/queryClient';
+import {useCallback} from 'react';
 
 interface Props {
   chatId: number;
@@ -21,15 +22,23 @@ export const CreateMessageForm = ({chatId, message, setMessage}: Props) => {
     mutationFn: createMessage,
     onSuccess: () => {
       queryClient.invalidateQueries({queryKey: messagesKeys.chat(chatId)});
+      queryClient.invalidateQueries({queryKey: chatsKeys.recent});
       setMessage('');
     },
   });
+
+  const onChange = useCallback(
+    (text: string) => {
+      setMessage(text);
+    },
+    [setMessage],
+  );
 
   return (
     <KeyboardAvoidingView style={{padding: 16}}>
       <TextInput
         value={message}
-        onChangeText={setMessage}
+        onChangeText={onChange}
         placeholder="Type a message..."
         style={{
           backgroundColor: 'white',
