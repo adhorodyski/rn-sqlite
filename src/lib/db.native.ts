@@ -28,8 +28,8 @@ db.executeBatch([
 let insertions: [string, any[]][] = [];
 
 const MAX_USERS = 100;
-const MAX_CHATS = 100;
-const MAX_MESSAGES = 6000;
+const MAX_CHATS = 5000;
+const MAX_MESSAGES = 200;
 const MAX_FEATURES = 48;
 
 const random = (arr: any[]) => arr[Math.floor(Math.random() * arr.length)];
@@ -54,8 +54,8 @@ for (let i = 0; i < MAX_USERS; i++) {
  */
 for (let i = 0; i < MAX_CHATS; i++) {
   insertions.push([
-    'INSERT INTO chats (title, is_vip) VALUES (?, ?)',
-    ['#' + random(words), Math.random() > 0.5 ? 1 : 0],
+    'INSERT INTO chats (title) VALUES (?)',
+    ['#' + random(words)],
   ]);
 
   for (let y = 0; y < MAX_MESSAGES; y++) {

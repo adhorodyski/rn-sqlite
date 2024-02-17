@@ -41,7 +41,7 @@ export const CreateMessageForm = ({chatId, message, setMessage}: Props) => {
         onChangeText={onChange}
         placeholder="Type a message..."
         style={{
-          backgroundColor: 'white',
+          backgroundColor: message === '/vip' ? 'lightyellow' : 'white',
           padding: 16,
           marginBottom: 16,
         }}

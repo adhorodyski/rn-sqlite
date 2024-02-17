@@ -23,14 +23,17 @@ export const ChatsList = () => {
       renderItem={({item}) => (
         <TouchableOpacity
           key={item.id}
-          style={styles.item}
+          style={[
+            styles.item,
+            {backgroundColor: item.is_vip ? 'lightyellow' : 'white'},
+          ]}
           onPress={() => navigation.navigate('Chat', {chatId: item.id})}>
           <Avatar
             size="small"
             initials={parseEmail(item.last_message_author_email)}
           />
           <View>
-            <Text>
+            <Text style={{fontWeight: 'bold'}}>
               {item.title} {item.is_vip ? '(VIP)' : ''}
             </Text>
             <Text style={{color: 'gray'}}>
