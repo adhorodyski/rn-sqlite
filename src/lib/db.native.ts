@@ -16,8 +16,11 @@ db.executeBatch([
     'CREATE TABLE IF NOT EXISTS features (id INTEGER PRIMARY KEY, name TEXT, is_enabled INTEGER)',
   ],
   // create indexes
-  ['CREATE INDEX IF NOT EXISTS idx_messages_chat_id ON messages (chat_id)'],
-  ['CREATE INDEX IF NOT EXISTS idx_messages_author_id ON messages (author_id)'],
+  ['CREATE INDEX IF NOT EXISTS idx_messages_chat_id ON messages(chat_id)'],
+  ['CREATE INDEX IF NOT EXISTS idx_messages_author_id ON messages(author_id)'],
+  [
+    'CREATE INDEX IF NOT EXISTS idx_messages_chat_id_created_at ON messages(chat_id, created_at)',
+  ],
 ]);
 
 let insertions: [string, any[]][] = [];

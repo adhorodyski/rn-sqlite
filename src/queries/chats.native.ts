@@ -10,23 +10,23 @@ export const getRecentChats = async () => {
   const now = performance.now();
   const response = await db.executeAsync(
     `SELECT
-        chats.*,
+        chats.id,
+        chats.title,
         messages.content AS last_message,
         users.email AS last_message_author_email
     FROM
         chats
-    LEFT JOIN
-        messages ON chats.id = messages.chat_id
-    LEFT JOIN
+    JOIN (
+        SELECT chat_id, MAX(created_at) AS latest_message_time
+        FROM messages
+        GROUP BY chat_id
+    ) latest_message ON chats.id = latest_message.chat_id
+    JOIN
+        messages ON chats.id = messages.chat_id AND latest_message.latest_message_time = messages.created_at
+    JOIN
         users ON messages.author_id = users.id
-    WHERE
-        messages.created_at = (
-            SELECT MAX(created_at)
-            FROM messages
-            WHERE chat_id = chats.id
-        )
-      GROUP BY chats.id
-      ORDER BY messages.created_at DESC
+    GROUP BY chats.id
+    ORDER BY latest_message.latest_message_time DESC
 `,
   );
   const end = performance.now() - now;
