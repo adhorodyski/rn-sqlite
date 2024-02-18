@@ -1,14 +1,24 @@
 import {useNavigation} from '@react-navigation/native';
 import {useSuspenseQuery} from '@tanstack/react-query';
 import React from 'react';
-import {FlatList, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {
+  Alert,
+  FlatList,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import {Avatar} from './components/Avatar';
+import {useFeatureToggle} from './lib/featureProvider/useFeature';
 
+import {IconSvg} from './components/IconSVG/IconSVG';
 import {chatsKeys} from './lib/keys';
 import {getRecentChats} from './queries/chats.native';
 
 export const ChatsList = () => {
   const navigation = useNavigation();
+  const showChatListActionIcons = useFeatureToggle('chat-list-action-icons');
 
   const recentChats = useSuspenseQuery({
     queryKey: chatsKeys.recent,
@@ -28,20 +38,55 @@ export const ChatsList = () => {
             {backgroundColor: item.is_vip ? 'lightyellow' : 'white'},
           ]}
           onPress={() => navigation.navigate('Chat', {chatId: item.id})}>
-          <Avatar
-            size="small"
-            initials={parseEmail(item.last_message_author_email)}
-          />
           <View>
-            <Text style={{fontWeight: 'bold'}}>
-              {item.title} {item.is_vip ? '(VIP)' : ''}
-            </Text>
-            <Text style={{color: 'gray'}}>
-              {item.last_message_author_email}
-            </Text>
-            <Text style={{color: 'blue', maxWidth: 300}}>
-              {item.last_message}
-            </Text>
+            <View style={styles.row}>
+              <Avatar
+                size="small"
+                initials={parseEmail(item.last_message_author_email)}
+                style={{marginRight: 10}}
+              />
+              <View>
+                <Text style={{fontWeight: 'bold'}}>
+                  {item.title} {item.is_vip ? '(VIP)' : ''}
+                </Text>
+                <Text style={{color: 'gray'}}>
+                  {item.last_message_author_email}
+                </Text>
+                <Text style={{color: 'blue', maxWidth: 300}}>
+                  {item.last_message}
+                </Text>
+              </View>
+            </View>
+            {showChatListActionIcons && (
+              <View>
+                <View style={{flexDirection: 'row-reverse', marginTop: 10}}>
+                  <TouchableOpacity
+                    onPress={() => Alert.alert('Quote option pressed')}>
+                    <IconSvg
+                      name="quote-right"
+                      width={20}
+                      style={{margin: 10}}
+                    />
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    onPress={() => Alert.alert('Remove option pressed')}>
+                    <IconSvg
+                      name="recycle-bin"
+                      width={20}
+                      style={{margin: 10}}
+                    />
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    onPress={() => Alert.alert('Reply option pressed')}>
+                    <IconSvg
+                      name="reply-arrow"
+                      width={20}
+                      style={{margin: 10}}
+                    />
+                  </TouchableOpacity>
+                </View>
+              </View>
+            )}
           </View>
         </TouchableOpacity>
       )}
@@ -59,9 +104,12 @@ const parseEmail = (email: string | undefined) => {
 const styles = StyleSheet.create({
   item: {
     display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'flex-start',
+    flex: 1,
+    alignItems: 'stretch',
     padding: 16,
     gap: 16,
+  },
+  row: {
+    flexDirection: 'row',
   },
 });
