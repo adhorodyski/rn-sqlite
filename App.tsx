@@ -7,7 +7,6 @@ import {FeatureProvider} from './src/lib/featureProvider/FeatureProvider';
 import {queryClient} from './src/lib/queryClient';
 
 export default function App() {
-  console.log('### INIT APP');
   return (
     <NavigationContainer>
       <QueryClientProvider client={queryClient}>

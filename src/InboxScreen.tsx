@@ -16,26 +16,28 @@ export const InboxScreen = () => {
     InboxMessage[] | undefined
   >(undefined);
   const [autoRefetch, setAutoRefetch] = useState(true);
+  const [isRefreshing, setIsRefreshing] = useState(false);
 
   const inboxMessagesData = useQuery({
     queryKey: inboxKeys.all,
     queryFn: getInboxMessages,
   });
 
-  const isLoading =
-    inboxMessagesData.isLoading ||
-    inboxMessagesData.isFetching ||
-    inboxMessagesData.isRefetching;
-
-  const refetch = () => {
+  const refetch = (isAuto = false) => {
+    if (!isAuto) {
+      setIsRefreshing(true);
+    }
     queryClient.invalidateQueries({queryKey: inboxKeys.all});
     inboxMessagesData.refetch();
+    if (!isAuto) {
+      setIsRefreshing(false);
+    }
   };
 
   useFocusEffect(
     React.useCallback(() => {
       if (autoRefetch) {
-        refetch();
+        refetch(true);
         setAutoRefetch(false);
       }
       return () => setAutoRefetch(true);
@@ -45,11 +47,20 @@ export const InboxScreen = () => {
   useEffect(() => {
     if (inboxMessagesData.isSuccess) {
       setInboxMessages(inboxMessagesData.data);
+      setIsRefreshing(false);
     }
   }, [inboxMessagesData.isSuccess, inboxMessagesData.data]);
 
+  useEffect(() => {
+    const interval = setInterval(() => {
+      refetch(true);
+    }, 10000);
+
+    return () => clearInterval(interval);
+  }, []);
+
   return (
-    <View style={{maxHeight: '100%'}}>
+    <View style={{maxHeight: '100%', backgroundColor: 'white'}}>
       <Text
         style={{fontWeight: 'bold', paddingHorizontal: 16, paddingVertical: 8}}>
         {'Inbox'}
@@ -59,7 +70,7 @@ export const InboxScreen = () => {
         <InboxMessagesList
           inboxMessages={inboxMessages}
           refetch={refetch}
-          isLoading={isLoading}
+          isLoading={isRefreshing}
         />
       </Suspense>
     </View>

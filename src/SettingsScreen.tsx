@@ -89,15 +89,17 @@ export const SettingsScreen = () => {
 
   return (
     <View
-      styles={{
-        marginTop: 20,
+      style={{
+        flex: 1,
+        paddingTop: 20,
+        paddingLeft: 20,
+        backgroundColor: 'white',
       }}>
       <View
         style={{
           maxHeight: '100%',
           flexDirection: 'row',
           marginTop: 20,
-          marginLeft: 20,
         }}>
         <Switch
           trackColor={{false: '#767577', true: '#81b0ff'}}
@@ -118,7 +120,6 @@ export const SettingsScreen = () => {
           maxHeight: '100%',
           flexDirection: 'row',
           marginTop: 20,
-          marginLeft: 20,
         }}>
         <Switch
           trackColor={{false: '#767577', true: '#81b0ff'}}
@@ -139,7 +140,6 @@ export const SettingsScreen = () => {
           maxHeight: '100%',
           flexDirection: 'row',
           marginTop: 20,
-          marginLeft: 20,
         }}>
         <Switch
           trackColor={{false: '#767577', true: '#81b0ff'}}
@@ -160,7 +160,6 @@ export const SettingsScreen = () => {
           maxHeight: '100%',
           flexDirection: 'row',
           marginTop: 20,
-          marginLeft: 20,
         }}>
         <Switch
           trackColor={{false: '#767577', true: '#81b0ff'}}
@@ -181,7 +180,6 @@ export const SettingsScreen = () => {
           maxHeight: '100%',
           flexDirection: 'row',
           marginTop: 20,
-          marginLeft: 20,
         }}>
         <Switch
           trackColor={{false: '#767577', true: '#81b0ff'}}
@@ -203,7 +201,7 @@ export const SettingsScreen = () => {
             maxHeight: '100%',
             flexDirection: 'row',
             marginTop: 20,
-            marginLeft: 40,
+            marginLeft: 20,
           }}>
           <Switch
             trackColor={{false: '#767577', true: '#81b0ff'}}
