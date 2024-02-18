@@ -8,6 +8,7 @@ import {queryClient} from './lib/queryClient';
 import {InboxMessage} from './lib/types';
 
 import React from 'react';
+import {Loader} from './Loader';
 import {getInboxMessages} from './queries/inbox.native';
 
 export const InboxScreen = () => {
@@ -54,7 +55,7 @@ export const InboxScreen = () => {
         {'Inbox'}
       </Text>
 
-      <Suspense fallback={<Text>Loading messages...</Text>}>
+      <Suspense fallback={<Loader />}>
         <InboxMessagesList
           inboxMessages={inboxMessages}
           refetch={refetch}

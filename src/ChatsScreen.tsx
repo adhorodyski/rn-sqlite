@@ -1,10 +1,10 @@
 import {Suspense} from 'react';
-import {Text} from 'react-native';
 import {ChatsList} from './ChatsList';
+import {Loader} from './Loader';
 
 export const ChatsScreen = () => {
   return (
-    <Suspense fallback={<Text>Loading chats...</Text>}>
+    <Suspense fallback={<Loader />}>
       <ChatsList />
     </Suspense>
   );
