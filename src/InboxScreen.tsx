@@ -52,11 +52,9 @@ export const InboxScreen = () => {
   }, [inboxMessagesData.isSuccess, inboxMessagesData.data]);
 
   useEffect(() => {
-    const interval = setInterval(() => {
+    setInterval(() => {
       refetch(true);
     }, 10000);
-
-    return () => clearInterval(interval);
   }, []);
 
   return (
