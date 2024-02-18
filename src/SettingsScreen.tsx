@@ -11,65 +11,79 @@ export const SettingsScreen = () => {
   const showChatListActionIcons = useFeatureToggle('chat-list-action-icons');
   const showInboxListAvatar = useFeatureToggle('inbox-list-avatar');
   const showInboxListActionIcons = useFeatureToggle('inbox-list-action-icons');
+  const showSettingsNewFeature = useFeatureToggle('settings-new-feature');
+  const showNewFeature = useFeatureToggle('new-feature');
 
-  const [chatAvatarToggleValue, setChatAvatarToggleValueValue] = useState<
+  const [chatAvatarToggleValue, setChatAvatarToggleValue] = useState<
     undefined | boolean
   >();
-  const [chatActionIconsToggleValue, setChatActionIconsToggleValueValue] =
+  const [chatActionIconsToggleValue, setChatActionIconsToggleValue] = useState<
+    undefined | boolean
+  >();
+  const [inboxAvatarToggleValue, setInboxAvatarToggleValue] = useState<
+    undefined | boolean
+  >();
+  const [inboxActionIconsToggleValue, setInboxActionIconsToggleValue] =
     useState<undefined | boolean>();
-  const [inboxAvatarToggleValue, setInboxAvatarToggleValueToggleValue] =
+  const [settingsNewFeatureToggleValue, setSettingsNewFeatureToggleValue] =
     useState<undefined | boolean>();
-  const [
-    inboxActionIconsToggleValue,
-    setInboxActionIconsToggleValueToggleValue,
-  ] = useState<undefined | boolean>();
+  const [newFeatureToggleValue, setNewFeatureToggleValue] = useState<
+    undefined | boolean
+  >();
 
   useEffect(() => {
     if (chatAvatarToggleValue !== showChatListAvatar) {
-      setChatAvatarToggleValueValue(showChatListAvatar);
+      setChatAvatarToggleValue(showChatListAvatar);
     }
-  }, [
-    showChatListAvatar,
-    setChatAvatarToggleValueValue,
-    chatAvatarToggleValue,
-  ]);
+  }, [showChatListAvatar, setChatAvatarToggleValue, chatAvatarToggleValue]);
 
   useEffect(() => {
     if (chatActionIconsToggleValue !== showChatListActionIcons) {
-      setChatActionIconsToggleValueValue(showChatListActionIcons);
+      setChatActionIconsToggleValue(showChatListActionIcons);
     }
   }, [
     showChatListActionIcons,
-    setChatActionIconsToggleValueValue,
+    setChatActionIconsToggleValue,
     chatActionIconsToggleValue,
   ]);
 
   useEffect(() => {
     if (inboxActionIconsToggleValue !== showInboxListActionIcons) {
-      setInboxActionIconsToggleValueToggleValue(showInboxListActionIcons);
+      setInboxActionIconsToggleValue(showInboxListActionIcons);
     }
   }, [
     showInboxListActionIcons,
-    setInboxActionIconsToggleValueToggleValue,
+    setInboxActionIconsToggleValue,
     inboxActionIconsToggleValue,
   ]);
 
   useEffect(() => {
     if (inboxAvatarToggleValue !== showInboxListAvatar) {
-      setInboxAvatarToggleValueToggleValue(showInboxListAvatar);
+      setInboxAvatarToggleValue(showInboxListAvatar);
+    }
+  }, [showInboxListAvatar, setInboxAvatarToggleValue, inboxAvatarToggleValue]);
+
+  useEffect(() => {
+    if (settingsNewFeatureToggleValue !== showSettingsNewFeature) {
+      setSettingsNewFeatureToggleValue(showSettingsNewFeature);
     }
   }, [
-    showInboxListAvatar,
-    setInboxAvatarToggleValueToggleValue,
-    inboxAvatarToggleValue,
+    showSettingsNewFeature,
+    setSettingsNewFeatureToggleValue,
+    settingsNewFeatureToggleValue,
   ]);
+
+  useEffect(() => {
+    if (newFeatureToggleValue !== showNewFeature) {
+      setNewFeatureToggleValue(showNewFeature);
+    }
+  }, [showNewFeature, setNewFeatureToggleValue, newFeatureToggleValue]);
 
   const switchToggle = useMutation({
     mutationKey: featuresKeys.update(),
     mutationFn: updateFeature,
     onSuccess: () => {
       queryClient.invalidateQueries({queryKey: featuresKeys.all});
-      // setToggleValue(!toggleValue);
     },
   });
 
@@ -162,6 +176,50 @@ export const SettingsScreen = () => {
         />
         <Text>{'Show Action Icons in Inbox'}</Text>
       </View>
+      <View
+        style={{
+          maxHeight: '100%',
+          flexDirection: 'row',
+          marginTop: 20,
+          marginLeft: 20,
+        }}>
+        <Switch
+          trackColor={{false: '#767577', true: '#81b0ff'}}
+          thumbColor={showSettingsNewFeature ? '#f5dd4b' : '#f4f3f4'}
+          ios_backgroundColor="#3e3e3e"
+          onValueChange={() =>
+            switchToggle.mutate({
+              featureName: 'settings-new-feature',
+              isEnabled: Number(!settingsNewFeatureToggleValue),
+            })
+          }
+          value={settingsNewFeatureToggleValue ?? false}
+        />
+        <Text>{'Show New Features Toggles'}</Text>
+      </View>
+      {showSettingsNewFeature && (
+        <View
+          style={{
+            maxHeight: '100%',
+            flexDirection: 'row',
+            marginTop: 20,
+            marginLeft: 40,
+          }}>
+          <Switch
+            trackColor={{false: '#767577', true: '#81b0ff'}}
+            thumbColor={showNewFeature ? '#f5dd4b' : '#f4f3f4'}
+            ios_backgroundColor="#3e3e3e"
+            onValueChange={() =>
+              switchToggle.mutate({
+                featureName: 'new-feature',
+                isEnabled: Number(!newFeatureToggleValue),
+              })
+            }
+            value={newFeatureToggleValue ?? false}
+          />
+          <Text>{'Show New Features'}</Text>
+        </View>
+      )}
     </View>
   );
 };

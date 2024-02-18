@@ -79,6 +79,10 @@ const getFeatureName = (index: number) => {
       return 'inbox-list-avatar';
     case 3:
       return 'inbox-list-action-icons';
+    case 4:
+      return 'settings-new-feature';
+    case 5:
+      return 'new-feature';
     default:
       return faker.commerce.product().toLowerCase();
   }
@@ -93,6 +97,10 @@ const getFeatureValue = (featureName: string) => {
     case 'inbox-list-avatar':
       return 0;
     case 'inbox-list-action-icons':
+      return 0;
+    case 'settings-new-feature':
+      return 0;
+    case 'new-feature':
       return 0;
     default:
       return 0;

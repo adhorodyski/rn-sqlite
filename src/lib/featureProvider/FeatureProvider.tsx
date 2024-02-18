@@ -8,7 +8,9 @@ export type FeatureName =
   | 'chat-list-avatar'
   | 'chat-list-action-icons'
   | 'inbox-list-avatar'
-  | 'inbox-list-action-icons';
+  | 'inbox-list-action-icons'
+  | 'settings-new-feature'
+  | 'new-feature';
 
 export type FeatureContextType = FeatureConfig[] | undefined;
 
