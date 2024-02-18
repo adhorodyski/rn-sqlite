@@ -8,12 +8,21 @@ import {updateFeature} from './mutations/features.native';
 
 export const SettingsScreen = () => {
   const showChatListAvatar = useFeatureToggle('chat-list-avatar');
+  const showChatListActionIcons = useFeatureToggle('chat-list-action-icons');
   const showInboxListAvatar = useFeatureToggle('inbox-list-avatar');
+  const showInboxListActionIcons = useFeatureToggle('inbox-list-action-icons');
+
   const [chatAvatarToggleValue, setChatAvatarToggleValueValue] = useState<
     undefined | boolean
   >();
+  const [chatActionIconsToggleValue, setChatActionIconsToggleValueValue] =
+    useState<undefined | boolean>();
   const [inboxAvatarToggleValue, setInboxAvatarToggleValueToggleValue] =
     useState<undefined | boolean>();
+  const [
+    inboxActionIconsToggleValue,
+    setInboxActionIconsToggleValueToggleValue,
+  ] = useState<undefined | boolean>();
 
   useEffect(() => {
     if (chatAvatarToggleValue !== showChatListAvatar) {
@@ -23,6 +32,26 @@ export const SettingsScreen = () => {
     showChatListAvatar,
     setChatAvatarToggleValueValue,
     chatAvatarToggleValue,
+  ]);
+
+  useEffect(() => {
+    if (chatActionIconsToggleValue !== showChatListActionIcons) {
+      setChatActionIconsToggleValueValue(showChatListActionIcons);
+    }
+  }, [
+    showChatListActionIcons,
+    setChatActionIconsToggleValueValue,
+    chatActionIconsToggleValue,
+  ]);
+
+  useEffect(() => {
+    if (inboxActionIconsToggleValue !== showInboxListActionIcons) {
+      setInboxActionIconsToggleValueToggleValue(showInboxListActionIcons);
+    }
+  }, [
+    showInboxListActionIcons,
+    setInboxActionIconsToggleValueToggleValue,
+    inboxActionIconsToggleValue,
   ]);
 
   useEffect(() => {
@@ -79,6 +108,27 @@ export const SettingsScreen = () => {
         }}>
         <Switch
           trackColor={{false: '#767577', true: '#81b0ff'}}
+          thumbColor={showChatListActionIcons ? '#f5dd4b' : '#f4f3f4'}
+          ios_backgroundColor="#3e3e3e"
+          onValueChange={() =>
+            switchToggle.mutate({
+              featureName: 'chat-list-action-icons',
+              isEnabled: Number(!chatActionIconsToggleValue),
+            })
+          }
+          value={chatActionIconsToggleValue ?? false}
+        />
+        <Text>{'Show Action Icons in Chats'}</Text>
+      </View>
+      <View
+        style={{
+          maxHeight: '100%',
+          flexDirection: 'row',
+          marginTop: 20,
+          marginLeft: 20,
+        }}>
+        <Switch
+          trackColor={{false: '#767577', true: '#81b0ff'}}
           thumbColor={showInboxListAvatar ? '#f5dd4b' : '#f4f3f4'}
           ios_backgroundColor="#3e3e3e"
           onValueChange={() =>
@@ -90,6 +140,27 @@ export const SettingsScreen = () => {
           value={inboxAvatarToggleValue ?? false}
         />
         <Text>{'Show Avatar in Inbox'}</Text>
+      </View>
+      <View
+        style={{
+          maxHeight: '100%',
+          flexDirection: 'row',
+          marginTop: 20,
+          marginLeft: 20,
+        }}>
+        <Switch
+          trackColor={{false: '#767577', true: '#81b0ff'}}
+          thumbColor={showInboxListActionIcons ? '#f5dd4b' : '#f4f3f4'}
+          ios_backgroundColor="#3e3e3e"
+          onValueChange={() =>
+            switchToggle.mutate({
+              featureName: 'inbox-list-action-icons',
+              isEnabled: Number(!inboxActionIconsToggleValue),
+            })
+          }
+          value={inboxActionIconsToggleValue ?? false}
+        />
+        <Text>{'Show Action Icons in Inbox'}</Text>
       </View>
     </View>
   );
