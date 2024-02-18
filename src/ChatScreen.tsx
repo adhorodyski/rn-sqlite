@@ -1,12 +1,13 @@
+import type {NativeStackScreenProps} from '@react-navigation/native-stack';
+import {useSuspenseQuery} from '@tanstack/react-query';
 import {Suspense, useState} from 'react';
 import {Text, View} from 'react-native';
-import {useSuspenseQuery} from '@tanstack/react-query';
-import {getChat} from './queries/chats.native';
-import {chatsKeys} from './lib/keys';
-import type {RootStackParamList} from './RootStack';
-import type {NativeStackScreenProps} from '@react-navigation/native-stack';
-import {MessagesList} from './MessagesList';
 import {CreateMessageForm} from './CreateMessageForm';
+import {Loader} from './Loader';
+import {MessagesList} from './MessagesList';
+import type {RootStackParamList} from './RootStack';
+import {chatsKeys} from './lib/keys';
+import {getChat} from './queries/chats.native';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Chat'>;
 
@@ -24,7 +25,7 @@ export const ChatScreen = ({route: {params}}: Props) => {
         {chat.data.title}
       </Text>
 
-      <Suspense fallback={<Text>Loading messages...</Text>}>
+      <Suspense fallback={<Loader />}>
         <MessagesList chatId={chat.data.id} />
       </Suspense>
 
