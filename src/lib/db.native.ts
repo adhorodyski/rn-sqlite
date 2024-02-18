@@ -12,6 +12,9 @@ db.executeBatch([
     'CREATE TABLE IF NOT EXISTS messages (id INTEGER PRIMARY KEY, chat_id INTEGER NOT NULL, content TEXT, created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP, author_id INTEGER NOT NULL)',
   ],
   [
+    'CREATE TABLE IF NOT EXISTS inbox (id INTEGER PRIMARY KEY, content TEXT, created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP, sender TEXT )',
+  ],
+  [
     'CREATE TABLE IF NOT EXISTS users (id INTEGER PRIMARY KEY, name TEXT, email TEXT)',
   ],
   [
@@ -31,6 +34,7 @@ const MAX_USERS = 100;
 const MAX_CHATS = 5000;
 const MAX_MESSAGES = 200;
 const MAX_FEATURES = 48;
+const MAX_INBOX_MESSAGES = 500;
 
 const random = (arr: any[]) => arr[Math.floor(Math.random() * arr.length)];
 
@@ -64,6 +68,16 @@ for (let i = 0; i < MAX_CHATS; i++) {
       [i, random(sentences), Math.floor(Math.random() * MAX_USERS) + 1],
     ]);
   }
+}
+
+/**
+ * This seeds the database with <MAX_CHATS> chats and <MAX_MESSAGES> messages per chat.
+ */
+for (let i = 0; i < MAX_INBOX_MESSAGES; i++) {
+  insertions.push([
+    'INSERT INTO inbox (content, sender) VALUES (?, ?)',
+    [random(sentences), random(emails)],
+  ]);
 }
 
 /**
