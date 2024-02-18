@@ -73,15 +73,38 @@ const getFeatureName = (index: number) => {
   switch (index) {
     case 0:
       return 'chat-list-avatar';
+    case 1:
+      return 'chat-list-action-icons';
+    case 2:
+      return 'inbox-list-avatar';
+    case 3:
+      return 'inbox-list-action-icons';
     default:
       return faker.commerce.product().toLowerCase();
   }
 };
 
+const getFeatureValue = (featureName: string) => {
+  switch (featureName) {
+    case 'chat-list-avatar':
+      return 0;
+    case 'chat-list-action-icons':
+      return 0;
+    case 'inbox-list-avatar':
+      return 0;
+    case 'inbox-list-action-icons':
+      return 0;
+    default:
+      return 0;
+  }
+};
+
 for (let i = 0; i < MAX_FEATURES; i++) {
+  const featureName = getFeatureName(i);
+  const featureValue = getFeatureValue(featureName);
   insertions.push([
     'INSERT INTO features (name, is_enabled) VALUES (?, ?)',
-    [getFeatureName(i), 1],
+    [featureName, featureValue],
   ]);
 }
 

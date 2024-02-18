@@ -8,44 +8,89 @@ import {updateFeature} from './mutations/features.native';
 
 export const SettingsScreen = () => {
   const showChatListAvatar = useFeatureToggle('chat-list-avatar');
-  const [toggleValue, setToggleValue] = useState<undefined | boolean>();
+  const showInboxListAvatar = useFeatureToggle('inbox-list-avatar');
+  const [chatAvatarToggleValue, setChatAvatarToggleValueValue] = useState<
+    undefined | boolean
+  >();
+  const [inboxAvatarToggleValue, setInboxAvatarToggleValueToggleValue] =
+    useState<undefined | boolean>();
 
   useEffect(() => {
-    if (toggleValue === undefined) {
-      setToggleValue(showChatListAvatar);
+    if (chatAvatarToggleValue !== showChatListAvatar) {
+      setChatAvatarToggleValueValue(showChatListAvatar);
     }
-  }, [showChatListAvatar, setToggleValue, toggleValue]);
+  }, [
+    showChatListAvatar,
+    setChatAvatarToggleValueValue,
+    chatAvatarToggleValue,
+  ]);
+
+  useEffect(() => {
+    if (inboxAvatarToggleValue !== showInboxListAvatar) {
+      setInboxAvatarToggleValueToggleValue(showInboxListAvatar);
+    }
+  }, [
+    showInboxListAvatar,
+    setInboxAvatarToggleValueToggleValue,
+    inboxAvatarToggleValue,
+  ]);
 
   const switchToggle = useMutation({
     mutationKey: featuresKeys.update(),
     mutationFn: updateFeature,
     onSuccess: () => {
       queryClient.invalidateQueries({queryKey: featuresKeys.all});
-      setToggleValue(!toggleValue);
+      // setToggleValue(!toggleValue);
     },
   });
 
   return (
     <View
-      style={{
-        maxHeight: '100%',
-        flexDirection: 'row',
-        marginVertical: 20,
-        marginLeft: 20,
+      styles={{
+        marginTop: 20,
       }}>
-      <Switch
-        trackColor={{false: '#767577', true: '#81b0ff'}}
-        thumbColor={showChatListAvatar ? '#f5dd4b' : '#f4f3f4'}
-        ios_backgroundColor="#3e3e3e"
-        onValueChange={() =>
-          switchToggle.mutate({
-            featureName: 'chat-list-avatar',
-            isEnabled: Number(!toggleValue),
-          })
-        }
-        value={toggleValue ?? false}
-      />
-      <Text>{'Show Avatar'}</Text>
+      <View
+        style={{
+          maxHeight: '100%',
+          flexDirection: 'row',
+          marginTop: 20,
+          marginLeft: 20,
+        }}>
+        <Switch
+          trackColor={{false: '#767577', true: '#81b0ff'}}
+          thumbColor={showChatListAvatar ? '#f5dd4b' : '#f4f3f4'}
+          ios_backgroundColor="#3e3e3e"
+          onValueChange={() =>
+            switchToggle.mutate({
+              featureName: 'chat-list-avatar',
+              isEnabled: Number(!chatAvatarToggleValue),
+            })
+          }
+          value={chatAvatarToggleValue ?? false}
+        />
+        <Text>{'Show Avatar in Chats'}</Text>
+      </View>
+      <View
+        style={{
+          maxHeight: '100%',
+          flexDirection: 'row',
+          marginTop: 20,
+          marginLeft: 20,
+        }}>
+        <Switch
+          trackColor={{false: '#767577', true: '#81b0ff'}}
+          thumbColor={showInboxListAvatar ? '#f5dd4b' : '#f4f3f4'}
+          ios_backgroundColor="#3e3e3e"
+          onValueChange={() =>
+            switchToggle.mutate({
+              featureName: 'inbox-list-avatar',
+              isEnabled: Number(!inboxAvatarToggleValue),
+            })
+          }
+          value={inboxAvatarToggleValue ?? false}
+        />
+        <Text>{'Show Avatar in Inbox'}</Text>
+      </View>
     </View>
   );
 };
