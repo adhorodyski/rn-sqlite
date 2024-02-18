@@ -12,6 +12,9 @@ db.executeBatch([
     'CREATE TABLE IF NOT EXISTS messages (id INTEGER PRIMARY KEY, chat_id INTEGER NOT NULL, content TEXT, created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP, author_id INTEGER NOT NULL)',
   ],
   [
+    'CREATE TABLE IF NOT EXISTS inbox (id INTEGER PRIMARY KEY, content TEXT, title TEXT, created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP, sender TEXT )',
+  ],
+  [
     'CREATE TABLE IF NOT EXISTS users (id INTEGER PRIMARY KEY, name TEXT, email TEXT)',
   ],
   [
@@ -31,6 +34,7 @@ const MAX_USERS = 100;
 const MAX_CHATS = 5000;
 const MAX_MESSAGES = 200;
 const MAX_FEATURES = 48;
+const MAX_INBOX_MESSAGES = 500;
 
 const random = (arr: any[]) => arr[Math.floor(Math.random() * arr.length)];
 
@@ -67,21 +71,62 @@ for (let i = 0; i < MAX_CHATS; i++) {
 }
 
 /**
+ * This seeds the database with <MAX_CHATS> chats and <MAX_MESSAGES> messages per chat.
+ */
+for (let i = 0; i < MAX_INBOX_MESSAGES; i++) {
+  insertions.push([
+    'INSERT INTO inbox (content, title, sender) VALUES (?, ?, ?)',
+    [random(sentences), random(words), random(emails)],
+  ]);
+}
+
+/**
  * This seeds the database with <MAX_FEATURES> features.
  */
 const getFeatureName = (index: number) => {
   switch (index) {
     case 0:
       return 'chat-list-avatar';
+    case 1:
+      return 'chat-list-action-icons';
+    case 2:
+      return 'inbox-list-avatar';
+    case 3:
+      return 'inbox-list-action-icons';
+    case 4:
+      return 'settings-new-feature';
+    case 5:
+      return 'new-feature';
     default:
       return faker.commerce.product().toLowerCase();
   }
 };
 
+const getFeatureValue = (featureName: string) => {
+  switch (featureName) {
+    case 'chat-list-avatar':
+      return 0;
+    case 'chat-list-action-icons':
+      return 0;
+    case 'inbox-list-avatar':
+      return 0;
+    case 'inbox-list-action-icons':
+      return 0;
+    case 'settings-new-feature':
+      return 0;
+    case 'new-feature':
+      return 0;
+    default:
+      return 0;
+  }
+};
+
 for (let i = 0; i < MAX_FEATURES; i++) {
+  const featureName = getFeatureName(i);
+  const featureValue = getFeatureValue(featureName);
   insertions.push([
     'INSERT INTO features (name, is_enabled) VALUES (?, ?)',
-    [getFeatureName(i), 1],
+    [featureName, featureValue],
   ]);
 }
 

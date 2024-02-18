@@ -2,6 +2,7 @@ import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {ChatScreen} from './ChatScreen';
 import {ChatsScreen} from './ChatsScreen';
+import {InboxScreen} from './InboxScreen';
 import {SettingsScreen} from './SettingsScreen';
 import {shouldPersistViews} from './lib/navigationConfig';
 
@@ -9,6 +10,7 @@ export type RootStackParamList = {
   Chats: undefined;
   Chat: {chatId: number};
   Settings: undefined;
+  Inbox: undefined;
 };
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -32,5 +34,6 @@ export const RootStack = () => (
       options={{headerShown: false}}
     />
     <Tab.Screen name="Settings" component={SettingsScreen} />
+    <Tab.Screen name="Inbox" component={InboxScreen} />
   </Tab.Navigator>
 );

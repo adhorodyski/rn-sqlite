@@ -16,3 +16,9 @@ export interface FeatureConfig {
   name: string;
   is_enabled: boolean;
 }
+
+export interface InboxMessage {
+  sender: string;
+  content: string;
+  title: string;
+}

@@ -1,6 +1,3 @@
-import {useNavigation} from '@react-navigation/native';
-import {useSuspenseQuery} from '@tanstack/react-query';
-import React from 'react';
 import {
   Alert,
   FlatList,
@@ -9,65 +6,59 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import {Avatar} from './components/Avatar';
 import {useFeatureToggle} from './lib/featureProvider/useFeature';
+import {InboxMessage} from './lib/types';
 
+import {Avatar} from './components/Avatar';
 import {IconSvg} from './components/IconSVG/IconSVG';
-import {chatsKeys} from './lib/keys';
-import {getRecentChats} from './queries/chats.native';
 
-export const ChatsList = () => {
-  const navigation = useNavigation();
-  const showChatListActionIcons = useFeatureToggle('chat-list-action-icons');
+interface Props {
+  inboxMessages: InboxMessage[] | undefined;
+  isLoading: boolean;
+  refetch: () => void;
+}
 
-  const recentChats = useSuspenseQuery({
-    queryKey: chatsKeys.recent,
-    queryFn: getRecentChats,
-  });
+export const InboxMessagesList = ({
+  inboxMessages,
+  refetch,
+  isLoading,
+}: Props) => {
+  const showInboxListActionIcons = useFeatureToggle('inbox-list-action-icons');
 
   return (
     <FlatList
-      refreshing={recentChats.isRefetching}
-      onRefresh={recentChats.refetch}
-      data={recentChats.data}
+      data={inboxMessages}
+      refreshing={isLoading}
+      onRefresh={refetch}
+      ListEmptyComponent={
+        <View>
+          <Text>List is empty</Text>
+        </View>
+      }
       renderItem={({item}) => (
-        <TouchableOpacity
-          key={item.id}
-          style={[
-            styles.item,
-            {backgroundColor: item.is_vip ? 'lightyellow' : 'white'},
-          ]}
-          onPress={() => navigation.navigate('Chat', {chatId: item.id})}>
+        <TouchableOpacity key={item.id} style={{padding: 16}}>
           <View>
             <View style={styles.row}>
               <Avatar
                 size="small"
-                initials={parseEmail(item.last_message_author_email)}
+                initials={parseEmail(item.sender)}
                 style={{marginRight: 10}}
-                featureToggleName={'chat-list-avatar'}
+                featureToggleName={'inbox-list-avatar'}
               />
               <View>
-                <Text style={{fontWeight: 'bold'}}>
-                  {item.title} {item.is_vip ? '(VIP)' : ''}
-                </Text>
-                <Text style={{color: 'gray'}}>
-                  {item.last_message_author_email}
-                </Text>
+                <Text style={{fontWeight: 'bold'}}>{item.title}</Text>
+                <Text style={{color: 'gray'}}>{item.content}</Text>
                 <Text style={{color: 'blue', maxWidth: 300}}>
-                  {item.last_message}
+                  {item.sender}
                 </Text>
               </View>
             </View>
-            {showChatListActionIcons && (
+            {showInboxListActionIcons && (
               <View>
                 <View style={{flexDirection: 'row-reverse', marginTop: 10}}>
                   <TouchableOpacity
-                    onPress={() => Alert.alert('Quote option pressed')}>
-                    <IconSvg
-                      name="quote-right"
-                      width={20}
-                      style={{margin: 10}}
-                    />
+                    onPress={() => Alert.alert('Mark Read option pressed')}>
+                    <IconSvg name="mark-read" width={20} style={{margin: 10}} />
                   </TouchableOpacity>
                   <TouchableOpacity
                     onPress={() => Alert.alert('Remove option pressed')}>

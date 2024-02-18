@@ -12,3 +12,7 @@ export const featuresKeys = {
   all: ['features'] as const,
   update: () => ['update-feature'] as const,
 };
+
+export const inboxKeys = {
+  all: ['inbox'] as const,
+};
