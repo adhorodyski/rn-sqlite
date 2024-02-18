@@ -20,4 +20,5 @@ export interface FeatureConfig {
 export interface InboxMessage {
   sender: string;
   content: string;
+  title: string;
 }

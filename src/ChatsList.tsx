@@ -44,6 +44,7 @@ export const ChatsList = () => {
                 size="small"
                 initials={parseEmail(item.last_message_author_email)}
                 style={{marginRight: 10}}
+                featureToggleName={'chat-list-avatar'}
               />
               <View>
                 <Text style={{fontWeight: 'bold'}}>

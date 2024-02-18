@@ -12,7 +12,7 @@ db.executeBatch([
     'CREATE TABLE IF NOT EXISTS messages (id INTEGER PRIMARY KEY, chat_id INTEGER NOT NULL, content TEXT, created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP, author_id INTEGER NOT NULL)',
   ],
   [
-    'CREATE TABLE IF NOT EXISTS inbox (id INTEGER PRIMARY KEY, content TEXT, created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP, sender TEXT )',
+    'CREATE TABLE IF NOT EXISTS inbox (id INTEGER PRIMARY KEY, content TEXT, title TEXT, created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP, sender TEXT )',
   ],
   [
     'CREATE TABLE IF NOT EXISTS users (id INTEGER PRIMARY KEY, name TEXT, email TEXT)',
@@ -75,8 +75,8 @@ for (let i = 0; i < MAX_CHATS; i++) {
  */
 for (let i = 0; i < MAX_INBOX_MESSAGES; i++) {
   insertions.push([
-    'INSERT INTO inbox (content, sender) VALUES (?, ?)',
-    [random(sentences), random(emails)],
+    'INSERT INTO inbox (content, title, sender) VALUES (?, ?, ?)',
+    [random(sentences), random(words), random(emails)],
   ]);
 }
 

@@ -21,6 +21,11 @@ export const InboxScreen = () => {
     queryFn: getInboxMessages,
   });
 
+  const isLoading =
+    inboxMessagesData.isLoading ||
+    inboxMessagesData.isFetching ||
+    inboxMessagesData.isRefetching;
+
   const refetch = () => {
     queryClient.invalidateQueries({queryKey: inboxKeys.all});
     inboxMessagesData.refetch();
@@ -53,11 +58,7 @@ export const InboxScreen = () => {
         <InboxMessagesList
           inboxMessages={inboxMessages}
           refetch={refetch}
-          isLoading={
-            inboxMessagesData.isLoading ||
-            inboxMessagesData.isFetching ||
-            inboxMessagesData.isRefetching
-          }
+          isLoading={isLoading}
         />
       </Suspense>
     </View>
