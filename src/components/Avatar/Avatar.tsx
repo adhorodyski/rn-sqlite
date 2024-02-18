@@ -6,7 +6,7 @@ import {
   View,
   ViewStyle,
 } from 'react-native';
-import {useFeatureToggle} from '../../featureProvider/useFeature';
+import {useFeatureToggle} from '../../lib/featureProvider/useFeature';
 import {AvatarSvg} from './AvatarSvg';
 
 const defaultInitials = '??';

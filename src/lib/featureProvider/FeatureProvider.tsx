@@ -1,8 +1,8 @@
 import {useQuery} from '@tanstack/react-query';
 import React, {createContext} from 'react';
-import {featuresKeys} from '../lib/keys';
-import {FeatureConfig} from '../lib/types';
-import {getFeaturesConfig} from '../queries/features.native';
+import {featuresKeys} from '../keys';
+import {FeatureConfig} from '../types';
+import {getFeaturesConfig} from '../../queries/features.native';
 
 export type FeatureName = 'chat-list-avatar';
 

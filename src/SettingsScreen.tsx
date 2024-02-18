@@ -1,7 +1,7 @@
 import {useMutation} from '@tanstack/react-query';
 import {useEffect, useState} from 'react';
 import {Switch, Text, View} from 'react-native';
-import {useFeatureToggle} from './featureProvider/useFeature';
+import {useFeatureToggle} from './lib/featureProvider/useFeature';
 import {featuresKeys} from './lib/keys';
 import {queryClient} from './lib/queryClient';
 import {updateFeature} from './mutations/features.native';

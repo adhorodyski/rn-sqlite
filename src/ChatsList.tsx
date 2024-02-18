@@ -11,7 +11,7 @@ export const ChatsList = () => {
   const navigation = useNavigation();
 
   const recentChats = useSuspenseQuery({
-    queryKey: chatsKeys.all,
+    queryKey: chatsKeys.recent,
     queryFn: getRecentChats,
   });
 
@@ -23,15 +23,19 @@ export const ChatsList = () => {
       renderItem={({item}) => (
         <TouchableOpacity
           key={item.id}
-          style={styles.item}
+          style={[
+            styles.item,
+            {backgroundColor: item.is_vip ? 'lightyellow' : 'white'},
+          ]}
           onPress={() => navigation.navigate('Chat', {chatId: item.id})}>
           <Avatar
             size="small"
             initials={parseEmail(item.last_message_author_email)}
           />
-          <Text>{item.id}</Text>
           <View>
-            <Text>{item.title}</Text>
+            <Text style={{fontWeight: 'bold'}}>
+              {item.title} {item.is_vip ? '(VIP)' : ''}
+            </Text>
             <Text style={{color: 'gray'}}>
               {item.last_message_author_email}
             </Text>
