@@ -9,3 +9,9 @@ export interface Message {
   author_id: number;
   content: string;
 }
+
+export interface User {
+  id: number;
+  name: string;
+  email: string;
+}

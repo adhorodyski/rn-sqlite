@@ -24,10 +24,10 @@ export const ChatScreen = ({route: {params}}: Props) => {
       </Text>
 
       <Suspense fallback={<Text>Loading messages...</Text>}>
-        <MessagesList chatId={chat.data.id} />
+        <MessagesList chatId={params.chatId} />
       </Suspense>
 
-      <CreateMessageForm chatId={chat.data.id} />
+      <CreateMessageForm chatId={params.chatId} />
     </View>
   );
 };
