@@ -11,13 +11,16 @@ export const getRecentChats = async () => {
   const now = performance.now();
   const response = await db.executeAsync(
     `SELECT json(value) AS value FROM kv
-    WHERE key LIKE 'chat_%'
-`,
+    WHERE key LIKE 'chat_%'`,
   );
   const end = performance.now() - now;
   console.log(`[Recent chats] took ${Math.round(end)}ms`);
   const chats = response.rows?._array.map(i => JSON.parse(i.value));
-  return chats as ChatWithLastMessage[];
+  return chats?.map(chat => ({
+    ...chat,
+    last_message: 'test',
+    last_message_author_email: 'author@mail.com',
+  })) as ChatWithLastMessage[];
 };
 
 export const getChat = async (id: number) => {
