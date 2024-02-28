@@ -3,20 +3,10 @@ import {open} from '@op-engineering/op-sqlite';
 
 export const db = open({name: 'op-sqlite', location: ':memory:'});
 
-const registerObserver = (keys: string[]) => {
-  // Currently this is getting called each time we do a big batch write and this is definitely not optimal
-  db.updateHook(({row = {}}) => {
-    // Bail out early if the updated value does not match against any of the keys we care about
-    if (!keys.some(key => row.key.startsWith(key))) {
-      return;
-    }
-
-    console.log(`[UpdateHook] ${row.key} got updated!`);
-  });
-};
-
-// Here we only listen for messages (message_) being updated
-registerObserver(['message_']);
+export interface Row<T = any> {
+  key: string;
+  value: T;
+}
 
 db.executeBatch([
   // create tables, ROWID is required for `updateHook` to fire

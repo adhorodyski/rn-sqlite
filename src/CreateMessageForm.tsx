@@ -8,7 +8,6 @@ import {
 import {useMutation} from '@tanstack/react-query';
 import {createMessage} from './mutations/messages.native';
 import {messagesKeys} from './lib/keys';
-import {queryClient} from './lib/queryClient';
 
 interface Props {
   chatId: number;
@@ -21,7 +20,6 @@ export const CreateMessageForm = ({chatId}: Props) => {
     mutationKey: messagesKeys.create(chatId),
     mutationFn: createMessage,
     onSuccess: () => {
-      queryClient.invalidateQueries({queryKey: messagesKeys.chat(chatId)});
       setContent('');
     },
   });
