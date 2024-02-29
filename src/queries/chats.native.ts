@@ -6,21 +6,42 @@ interface ChatWithLastMessage extends Chat {
   last_message_author_email: string;
 }
 
-// TODO rewrite from relational to KV
 export const getRecentChats = async () => {
   const now = performance.now();
   const response = await db.executeAsync(
-    `SELECT json(value) AS value FROM kv
-    WHERE key LIKE 'chat_%'`,
+    `SELECT
+        json_extract(chat.value, '$.id') AS id,
+        json_extract(chat.value, '$.title') AS title,
+        json_extract(last_message.value, '$.content') AS last_message,
+        json_extract(last_message_author.value, '$.email') AS last_message_author_email
+    FROM
+        kv AS chat
+    LEFT JOIN (
+        SELECT
+            json_extract(message.value, '$.chat_id') AS chat_id,
+            json_extract(message.value, '$.content') AS content,
+            json_extract(message.value, '$.author_id') AS author_id,
+            MAX(json_extract(message.value, '$.created_at')) AS max_created_at
+        FROM
+            kv AS message
+        WHERE
+            message.key LIKE 'message_%'
+        GROUP BY
+            json_extract(message.value, '$.chat_id')
+    ) AS last_message_info ON json_extract(chat.value, '$.id') = last_message_info.chat_id
+    LEFT JOIN
+        kv AS last_message ON last_message_info.chat_id = json_extract(last_message.value, '$.chat_id')
+        AND last_message_info.max_created_at = json_extract(last_message.value, '$.created_at')
+    LEFT JOIN
+        kv AS last_message_author ON json_extract(last_message.value, '$.author_id') = json_extract(last_message_author.value, '$.id')
+    WHERE chat.key LIKE 'chat_%'
+    GROUP BY json_extract(chat.value, '$.id')
+    LIMIT 100
+    `,
   );
   const end = performance.now() - now;
   console.log(`[Recent chats] took ${Math.round(end)}ms`);
-  const chats = response.rows?._array.map(i => JSON.parse(i.value));
-  return chats?.map(chat => ({
-    ...chat,
-    last_message: 'test',
-    last_message_author_email: 'author@mail.com',
-  })) as ChatWithLastMessage[];
+  return response.rows?._array as ChatWithLastMessage[];
 };
 
 export const getChat = async (id: number) => {
@@ -34,6 +55,5 @@ export const getChat = async (id: number) => {
   );
   const end = performance.now() - now;
   console.log(`[Chat] took ${Math.round(end)}ms (id: ${id})`);
-  const chat = response.rows?._array[0].value;
-  return JSON.parse(chat) as Chat;
+  return JSON.parse(response.rows?._array[0].value) as Chat;
 };

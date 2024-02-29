@@ -23,9 +23,9 @@ db.executeBatch([
 
 let insertions: [string, any[]][] = [];
 
-const MAX_USERS = 150;
-const MAX_CHATS = 200;
-const MAX_MESSAGES = 48;
+const MAX_USERS = 100;
+const MAX_CHATS = 100;
+const MAX_MESSAGES = 100;
 
 /**
  * This seeds the database with <MAX_USERS> users.

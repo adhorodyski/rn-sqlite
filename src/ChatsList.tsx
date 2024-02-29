@@ -3,6 +3,8 @@ import {useNavigation} from '@react-navigation/native';
 import {useSuspenseQuery} from '@tanstack/react-query';
 import {getRecentChats} from './queries/chats.native';
 import {chatsKeys} from './lib/keys';
+import {queryClient} from './lib/queryClient';
+import {useDatabaseSync} from './lib/useDatabaseSync';
 
 export const ChatsList = () => {
   const navigation = useNavigation();
@@ -11,6 +13,11 @@ export const ChatsList = () => {
     queryKey: chatsKeys.all,
     queryFn: getRecentChats,
   });
+
+  // This list will be updated when a new message comes in
+  useDatabaseSync(() => {
+    queryClient.invalidateQueries({queryKey: chatsKeys.all});
+  }, ['message_']);
 
   return (
     <FlatList
