@@ -1,23 +1,11 @@
 import {FlatList, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
-import {useSuspenseQuery} from '@tanstack/react-query';
-import {getRecentChats} from './queries/chats.native';
-import {chatsKeys} from './lib/keys';
-import {queryClient} from './lib/queryClient';
-import {useDatabaseSync} from './lib/useDatabaseSync';
+import {useRecentChats} from './queries/chats.native';
 
 export const ChatsList = () => {
   const navigation = useNavigation();
 
-  const recentChats = useSuspenseQuery({
-    queryKey: chatsKeys.all,
-    queryFn: getRecentChats,
-  });
-
-  // This list will be updated when a new message comes in
-  useDatabaseSync(() => {
-    queryClient.invalidateQueries({queryKey: chatsKeys.all});
-  }, ['message_']);
+  const recentChats = useRecentChats();
 
   return (
     <FlatList

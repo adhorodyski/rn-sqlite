@@ -1,5 +1,9 @@
+import {useSuspenseQuery} from '@tanstack/react-query';
 import {db} from '../lib/db.native';
+import {chatsKeys} from '../lib/keys';
+import {queryClient} from '../lib/queryClient';
 import type {Chat} from '../lib/types';
+import {useDatabaseSync} from '../lib/useDatabaseSync';
 
 interface ChatWithLastMessage extends Chat {
   last_message: string;
@@ -44,6 +48,19 @@ export const getRecentChats = async () => {
   return response.rows?._array as ChatWithLastMessage[];
 };
 
+export const useRecentChats = () => {
+  const recentChats = useSuspenseQuery({
+    queryKey: chatsKeys.all,
+    queryFn: getRecentChats,
+  });
+
+  useDatabaseSync(() => {
+    queryClient.invalidateQueries({queryKey: chatsKeys.all});
+  }, ['message_']);
+
+  return recentChats;
+};
+
 export const getChat = async (id: number) => {
   const now = performance.now();
   const response = await db.executeAsync(
@@ -56,4 +73,19 @@ export const getChat = async (id: number) => {
   const end = performance.now() - now;
   console.log(`[Chat] took ${Math.round(end)}ms (id: ${id})`);
   return JSON.parse(response.rows?._array[0].value) as Chat;
+};
+
+export const useChat = (id: number) => {
+  const queryKey = chatsKeys.one(id);
+
+  const chat = useSuspenseQuery({
+    queryKey,
+    queryFn: () => getChat(id),
+  });
+
+  useDatabaseSync(() => {
+    queryClient.invalidateQueries({queryKey});
+  }, [`chat_${id}`]);
+
+  return chat;
 };
