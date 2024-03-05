@@ -1,7 +1,16 @@
 import {faker} from '@faker-js/faker';
 import {open} from '@op-engineering/op-sqlite';
+import {DatabaseQueue} from './DatabaseQueue';
 
 export const db = open({name: 'op-sqlite', location: ':memory:'});
+
+export const queue = new DatabaseQueue();
+
+db.updateHook(params => {
+  queue.getSubscribers().forEach(func => {
+    func(params);
+  });
+});
 
 export interface Row<T = any> {
   key: string;
@@ -9,7 +18,7 @@ export interface Row<T = any> {
 }
 
 db.executeBatch([
-  // create tables, ROWID is required for `updateHook` to fire
+  // create tables, ROWID is required for `useDatabaseSync` to fire
   [
     'CREATE TABLE IF NOT EXISTS kv (key TEXT NOT NULL PRIMARY KEY, value JSON NOT NULL)',
   ],
@@ -43,6 +52,11 @@ for (let i = 0; i < MAX_USERS; i++) {
     ],
   ]);
 }
+
+insertions.push([
+  'INSERT INTO kv (key, value) VALUES (?, ?)',
+  ['betas', JSON.stringify(['feature_1', 'feature_2'])],
+]);
 
 /**
  * This seeds the database with <MAX_CHATS> chats and <MAX_MESSAGES> messages per chat.

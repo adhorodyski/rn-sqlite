@@ -1,28 +1,31 @@
 import {useSuspenseQuery} from '@tanstack/react-query';
+import {useMemo} from 'react';
 import {db} from '../lib/db.native';
 import {messagesKeys} from '../lib/keys';
 import {queryClient} from '../lib/queryClient';
-import {Message} from '../lib/types';
+import type {Message} from '../lib/types';
 import {useDatabaseSync} from '../lib/useDatabaseSync';
 
 export const getChatMessages = async (chatId: number) => {
-  const now = performance.now();
   const response = await db.executeAsync(
-    `SELECT json(value) AS value FROM kv
+    `SELECT
+        json_extract(value, '$.id') AS id,
+        json_extract(value, '$.chat_id') AS chat_id,
+        json_extract(value, '$.author_id') AS author_id,
+        json_extract(value, '$.content') AS content
+    FROM kv
     WHERE key LIKE 'message_%'
     AND json_extract(value, '$.chat_id') = ?
     ORDER BY json_extract(value, '$.created_at') DESC
     `,
     [chatId],
   );
-  const end = performance.now() - now;
-  console.log(`[Messages] took ${Math.round(end)}ms (chat_id: ${chatId})`);
-  const messages = response.rows?._array.map(i => JSON.parse(i.value));
-  return messages as Message[];
+  console.log('[Query] Messages');
+  return response.rows?._array as Message[];
 };
 
 export const useChatMessages = (chatId: number) => {
-  const queryKey = messagesKeys.chat(chatId);
+  const queryKey = useMemo(() => messagesKeys.chat(chatId), [chatId]);
 
   const messages = useSuspenseQuery({
     queryKey,
@@ -30,6 +33,7 @@ export const useChatMessages = (chatId: number) => {
   });
 
   useDatabaseSync(() => {
+    console.log('[Invalidate] Messages');
     queryClient.invalidateQueries({queryKey});
   }, ['message_']);
 

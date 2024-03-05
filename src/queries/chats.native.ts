@@ -11,7 +11,6 @@ interface ChatWithLastMessage extends Chat {
 }
 
 export const getRecentChats = async () => {
-  const now = performance.now();
   const response = await db.executeAsync(
     `SELECT
         json_extract(chat.value, '$.id') AS id,
@@ -43,8 +42,7 @@ export const getRecentChats = async () => {
     LIMIT 100
     `,
   );
-  const end = performance.now() - now;
-  console.log(`[Recent chats] took ${Math.round(end)}ms`);
+  console.log('[Query] Recent chats');
   return response.rows?._array as ChatWithLastMessage[];
 };
 
@@ -55,37 +53,9 @@ export const useRecentChats = () => {
   });
 
   useDatabaseSync(() => {
+    console.log('[Invalidate] Recent chats');
     queryClient.invalidateQueries({queryKey: chatsKeys.all});
-  }, ['message_']);
+  }, ['message_', 'user_']);
 
   return recentChats;
-};
-
-export const getChat = async (id: number) => {
-  const now = performance.now();
-  const response = await db.executeAsync(
-    `SELECT json(value) AS value FROM kv
-    WHERE key LIKE 'chat_%'
-    AND json_extract(value, '$.id') = ?
-    LIMIT 1`,
-    [id],
-  );
-  const end = performance.now() - now;
-  console.log(`[Chat] took ${Math.round(end)}ms (id: ${id})`);
-  return JSON.parse(response.rows?._array[0].value) as Chat;
-};
-
-export const useChat = (id: number) => {
-  const queryKey = chatsKeys.one(id);
-
-  const chat = useSuspenseQuery({
-    queryKey,
-    queryFn: () => getChat(id),
-  });
-
-  useDatabaseSync(() => {
-    queryClient.invalidateQueries({queryKey});
-  }, [`chat_${id}`]);
-
-  return chat;
 };

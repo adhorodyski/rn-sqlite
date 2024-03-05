@@ -5,6 +5,6 @@ export const chatsKeys = {
 };
 
 export const messagesKeys = {
-  chat: (chatId: number) => ['messages', chatId],
+  chat: (chatId: number) => ['messages', chatId] as const,
   create: (chatId: number) => ['create-message', chatId] as const,
 };
