@@ -1,6 +1,6 @@
 import {faker} from '@faker-js/faker';
 import {open} from '@op-engineering/op-sqlite';
-import {DatabaseQueue} from './DatabaseQueue';
+import {DatabaseQueue} from './databaseQueue';
 
 export const db = open({name: 'op-sqlite', location: ':memory:'});
 
