@@ -27,7 +27,6 @@ db.updateHook(params => {
       return;
     }
 
-    console.log(`[Invalidate] '${query.queryKey}'`);
     queryClient.invalidateQueries({queryKey: query.queryKey});
   });
 });
