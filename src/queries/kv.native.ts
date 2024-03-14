@@ -1,8 +1,6 @@
 import {useSuspenseQuery} from '@tanstack/react-query';
 import {db} from '../lib/db.native';
-import {queryClient} from '../lib/queryClient';
 import type {Chat} from '../lib/types';
-import {useDatabaseSync} from '../lib/useDatabaseSync';
 
 export const getByKey = async <T>(key: string) => {
   const response = await db.executeAsync(
@@ -19,11 +17,6 @@ export const useKey = <T>(key: string) => {
     queryKey: [key],
     queryFn: () => getByKey<T>(key),
   });
-
-  useDatabaseSync(() => {
-    console.log(`[Invalidate] '${key}'`);
-    queryClient.invalidateQueries({queryKey: [key]});
-  }, [key]);
 
   return query;
 };

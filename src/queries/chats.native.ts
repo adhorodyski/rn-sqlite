@@ -1,9 +1,7 @@
 import {useSuspenseQuery} from '@tanstack/react-query';
 import {db} from '../lib/db.native';
 import {chatsKeys} from '../lib/keys';
-import {queryClient} from '../lib/queryClient';
 import type {Chat} from '../lib/types';
-import {useDatabaseSync} from '../lib/useDatabaseSync';
 
 interface ChatWithLastMessage extends Chat {
   last_message: string;
@@ -50,12 +48,8 @@ export const useRecentChats = () => {
   const recentChats = useSuspenseQuery({
     queryKey: chatsKeys.all,
     queryFn: getRecentChats,
+    meta: {keys: ['message_', 'user_']},
   });
-
-  useDatabaseSync(() => {
-    console.log('[Invalidate] Recent chats');
-    queryClient.invalidateQueries({queryKey: chatsKeys.all});
-  }, ['message_', 'user_']);
 
   return recentChats;
 };

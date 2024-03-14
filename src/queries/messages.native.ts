@@ -2,9 +2,7 @@ import {useSuspenseQuery} from '@tanstack/react-query';
 import {useMemo} from 'react';
 import {db} from '../lib/db.native';
 import {messagesKeys} from '../lib/keys';
-import {queryClient} from '../lib/queryClient';
 import type {Message} from '../lib/types';
-import {useDatabaseSync} from '../lib/useDatabaseSync';
 
 export const getChatMessages = async (chatId: number) => {
   const response = await db.executeAsync(
@@ -30,12 +28,8 @@ export const useChatMessages = (chatId: number) => {
   const messages = useSuspenseQuery({
     queryKey,
     queryFn: () => getChatMessages(chatId),
+    meta: {keys: ['message_']},
   });
-
-  useDatabaseSync(() => {
-    console.log('[Invalidate] Messages');
-    queryClient.invalidateQueries({queryKey});
-  }, ['message_']);
 
   return messages;
 };
