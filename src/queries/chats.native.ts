@@ -48,7 +48,7 @@ export const useRecentChats = () => {
   const recentChats = useSuspenseQuery({
     queryKey: chatsKeys.all,
     queryFn: getRecentChats,
-    meta: {keys: ['message_', 'user_']},
+    meta: {automaticRevalidationKeys: ['message_', 'user_']},
   });
 
   return recentChats;

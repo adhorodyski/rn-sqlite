@@ -28,7 +28,7 @@ export const useChatMessages = (chatId: number) => {
   const messages = useSuspenseQuery({
     queryKey,
     queryFn: () => getChatMessages(chatId),
-    meta: {keys: ['message_']},
+    meta: {automaticRevalidationKeys: ['message_']},
   });
 
   return messages;

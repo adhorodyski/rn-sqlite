@@ -12,7 +12,7 @@ db.updateHook(params => {
 
   // TODO offload equality checks to run on  C++ / worklet / native if it turns out to be ~5x faster than Hermes
   queries.forEach(query => {
-    const metaKeys = query.meta?.keys;
+    const metaKeys = query.meta?.automaticRevalidationKeys;
 
     // exact match against SQLite
     if (metaKeys === undefined && query.queryKey[0] !== rowKey) {
