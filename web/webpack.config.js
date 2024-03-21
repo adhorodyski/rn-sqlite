@@ -39,7 +39,7 @@ const imageLoaderConfiguration = {
 };
 
 module.exports = {
-  entry: 'index.web.js',
+  entry: './web/index.web.js',
 
   // configures where the build ends up
   output: {
