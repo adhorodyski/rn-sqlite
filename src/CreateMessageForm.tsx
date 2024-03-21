@@ -6,7 +6,7 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import {useMutation} from '@tanstack/react-query';
-import {createMessage} from './mutations/messages.native';
+import {createMessage} from './mutations/messages';
 import {messagesKeys} from './lib/keys';
 
 interface Props {

@@ -1,17 +1,21 @@
+import {useSuspenseQuery} from '@tanstack/react-query';
 import type {Chat} from '../lib/types';
 
 // TODO - This is a stub. Implement the getByKey query.
 export const getByKey = async <T>(key: string) => {
   if (key === 'betas') {
-    return ['test', 'test', 'test'] as T;
+    return Promise.resolve(['beta-1', 'beta-2', 'beta-3'] as T);
   }
   if (key.startsWith('chat_')) {
-    return {id: 1, title: 'test'} as T;
+    return Promise.resolve({id: 1, title: 'Test - Chat Title'} as T);
   }
 };
 
 export const useKey = <T>(key: string) => {
-  const query = getByKey(key) as unknown as T;
+  const query = useSuspenseQuery({
+    queryKey: [key],
+    queryFn: () => getByKey<T>(key),
+  });
 
   return query;
 };
