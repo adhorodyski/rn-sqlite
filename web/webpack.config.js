@@ -39,12 +39,7 @@ const imageLoaderConfiguration = {
 };
 
 module.exports = {
-  entry: [
-    // load any web API polyfills
-    // path.resolve(appDirectory, 'polyfills-web.js'),
-    // your web-specific entry file
-    path.resolve(appDirectory, 'index.web.js'),
-  ],
+  entry: 'index.web.js',
 
   // configures where the build ends up
   output: {
