@@ -1,5 +1,5 @@
 import {Text} from 'react-native';
-import {useBetas} from './queries/kv.native';
+import {useBetas} from './queries/kv';
 
 export const SettingsScreen = () => {
   const betas = useBetas();

@@ -1,6 +1,6 @@
 import {FlatList, Text, TouchableOpacity} from 'react-native';
-import {db} from './lib/db.native';
-import {useBetas} from './queries/kv.native';
+import {db} from './lib/db';
+import {useBetas} from './queries/kv';
 import {useChatMessages} from './queries/messages.native';
 
 interface Props {

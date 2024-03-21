@@ -1,6 +1,6 @@
 import {useSuspenseQuery} from '@tanstack/react-query';
 import {useMemo} from 'react';
-import {db} from '../lib/db.native';
+import {db} from '../lib/db';
 import {messagesKeys} from '../lib/keys';
 import type {Message} from '../lib/types';
 

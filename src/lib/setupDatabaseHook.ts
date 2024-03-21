@@ -1,6 +1,6 @@
 import type {QueryClient} from '@tanstack/react-query';
 import type {OPSQLiteConnection} from '@op-engineering/op-sqlite';
-import type {Row} from './db.native';
+import type {Row} from './db';
 
 export const setupDatabaseHook = (
   db: OPSQLiteConnection,

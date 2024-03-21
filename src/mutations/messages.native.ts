@@ -1,4 +1,4 @@
-import {db} from '../lib/db.native';
+import {db} from '../lib/db';
 
 interface Props {
   chatId: number;

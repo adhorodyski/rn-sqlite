@@ -4,7 +4,7 @@ import {Text, View} from 'react-native';
 import {CreateMessageForm} from './CreateMessageForm';
 import {MessagesList} from './MessagesList';
 import type {RootStackParamList} from './RootStack';
-import {useBetas, useChat} from './queries/kv.native';
+import {useBetas, useChat} from './queries/kv';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Chat'>;
 

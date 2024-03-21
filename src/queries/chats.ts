@@ -1,5 +1,5 @@
 import {useSuspenseQuery} from '@tanstack/react-query';
-import {db} from '../lib/db.native';
+import {db} from '../lib/db';
 import {chatsKeys} from '../lib/keys';
 import type {Chat} from '../lib/types';
 
