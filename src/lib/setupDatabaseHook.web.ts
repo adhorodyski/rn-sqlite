@@ -1,11 +1,17 @@
 import type {QueryClient} from '@tanstack/react-query';
-// import {db, type Row} from './db';
-// import {databaseQueryHook} from './databaseQueryHook';
+import {db} from './db.web';
+import {databaseQueryHook} from './databaseQueryHook';
 
 export const setupDatabaseHook = (queryClient: QueryClient) => {
-  // TODO: this is a placeholder for the actual implementation that calls `databaseQueryHook()`
-  // db.updateHook(params => {
-  //   const keyChanged = (params.row as Row).key;
-  //   databaseQueryHook(keyChanged, queryClient);
-  // });
+  db.kv.hook('creating', keyChanged => {
+    databaseQueryHook(keyChanged, queryClient);
+  });
+
+  db.kv.hook('updating', (_, keyChanged) => {
+    databaseQueryHook(keyChanged, queryClient);
+  });
+
+  db.kv.hook('deleting', keyChanged => {
+    databaseQueryHook(keyChanged, queryClient);
+  });
 };

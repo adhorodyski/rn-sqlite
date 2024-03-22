@@ -1,7 +1,7 @@
 import Dexie from 'dexie';
 
 class Database extends Dexie {
-  kv!: Dexie.Table<unknown, number>;
+  kv!: Dexie.Table<unknown, string>;
 
   constructor() {
     super('MyAppDatabase');
