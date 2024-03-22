@@ -1,10 +1,9 @@
-import {useMemo} from 'react';
 import {useSuspenseQuery} from '@tanstack/react-query';
 import {getRecentChats} from './chats';
 import {getByKey} from './kv';
 import {getChatMessages} from './messages';
 import {chatsKeys, messagesKeys} from '../lib/keys';
-import {Chat} from '../lib/types';
+import type {Chat} from '../lib/types';
 
 export const useKey = <T>(key: string) => {
   const query = useSuspenseQuery({
@@ -29,10 +28,8 @@ export const useRecentChats = () => {
 };
 
 export const useChatMessages = (chatId: number) => {
-  const queryKey = useMemo(() => messagesKeys.chat(chatId), [chatId]);
-
   const messages = useSuspenseQuery({
-    queryKey,
+    queryKey: messagesKeys.chat(chatId),
     queryFn: () => getChatMessages(chatId),
     meta: {automaticRevalidationKeys: ['message_']},
   });
