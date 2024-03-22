@@ -1,7 +1,6 @@
 import {FlatList, Text, TouchableOpacity} from 'react-native';
-import {db} from './lib/db.native';
-import {useBetas} from './queries/kv.native';
-import {useChatMessages} from './queries/messages.native';
+import {db} from './lib/db';
+import {useBetas, useChatMessages} from './queries';
 
 interface Props {
   chatId: number;

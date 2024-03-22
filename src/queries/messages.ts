@@ -1,7 +1,4 @@
-import {useSuspenseQuery} from '@tanstack/react-query';
-import {useMemo} from 'react';
-import {db} from '../lib/db.native';
-import {messagesKeys} from '../lib/keys';
+import {db} from '../lib/db';
 import type {Message} from '../lib/types';
 
 export const getChatMessages = async (chatId: number) => {
@@ -20,16 +17,4 @@ export const getChatMessages = async (chatId: number) => {
   );
   console.log('[Query] Messages');
   return response.rows?._array as Message[];
-};
-
-export const useChatMessages = (chatId: number) => {
-  const queryKey = useMemo(() => messagesKeys.chat(chatId), [chatId]);
-
-  const messages = useSuspenseQuery({
-    queryKey,
-    queryFn: () => getChatMessages(chatId),
-    meta: {automaticRevalidationKeys: ['message_']},
-  });
-
-  return messages;
 };
