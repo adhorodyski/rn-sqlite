@@ -18,7 +18,9 @@ export const MessagesList = ({chatId}: Props) => {
         <TouchableOpacity
           key={item.id}
           style={{padding: 16}}
-          onPress={() => setBetas([...betas.data, item.id.toString()])}>
+          onPress={() =>
+            setBetas([`feature-${new Date().getTime().toString()}`])
+          }>
           <Text>
             {item.id}: {item.content}
           </Text>
