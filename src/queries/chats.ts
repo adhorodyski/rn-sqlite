@@ -1,6 +1,4 @@
-import {useSuspenseQuery} from '@tanstack/react-query';
 import {db} from '../lib/db';
-import {chatsKeys} from '../lib/keys';
 import type {Chat} from '../lib/types';
 
 interface ChatWithLastMessage extends Chat {
@@ -42,14 +40,4 @@ export const getRecentChats = async () => {
   );
   console.log('[Query] Recent chats');
   return response.rows?._array as ChatWithLastMessage[];
-};
-
-export const useRecentChats = () => {
-  const recentChats = useSuspenseQuery({
-    queryKey: chatsKeys.all,
-    queryFn: getRecentChats,
-    meta: {automaticRevalidationKeys: ['message_', 'user_']},
-  });
-
-  return recentChats;
 };

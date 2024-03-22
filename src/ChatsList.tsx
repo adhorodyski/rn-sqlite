@@ -1,6 +1,6 @@
 import {useNavigation} from '@react-navigation/native';
 import {FlatList, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
-import {useRecentChats} from './queries/chats';
+import {useRecentChats} from './queries';
 
 export const ChatsList = () => {
   const navigation = useNavigation();
