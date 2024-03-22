@@ -6,7 +6,7 @@ class Database extends Dexie {
 
   constructor() {
     super('MyAppDatabase');
-    this.version(1).stores({kv: ''});
+    this.version(1).stores({kv: 'key'});
   }
 }
 

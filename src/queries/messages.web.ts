@@ -1,6 +1,14 @@
-// TODO - This is a stub. Implement the getChatMessages query.
+import {db} from '../lib/db.web';
+
 export const getChatMessages = async (chatId: number) => {
-  return Promise.resolve([
-    {id: 0, chat_id: chatId, author_id: 2, content: 'test chat content'},
-  ]);
+  const messages = (
+    await db.kv
+      .where('key')
+      .startsWith('message_')
+      .and(message => message.chat_id === chatId)
+      .toArray()
+  ).sort((a, b) => b.created_at - a.created_at);
+
+  console.log('[Query] Messages');
+  return messages;
 };
