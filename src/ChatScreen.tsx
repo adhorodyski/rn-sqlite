@@ -3,10 +3,10 @@ import {Suspense} from 'react';
 import {Text, View} from 'react-native';
 import {CreateMessageForm} from './CreateMessageForm';
 import {MessagesList} from './MessagesList';
-import type {RootStackParamList} from './RootStack';
+import type {HomeStackParamList} from './RootStack';
 import {useBetas, useChat} from './queries';
 
-type Props = NativeStackScreenProps<RootStackParamList, 'Chat'>;
+type Props = NativeStackScreenProps<HomeStackParamList, 'Chat'>;
 
 export const ChatScreen = ({route: {params}}: Props) => {
   const chat = useChat(params.chatId);
