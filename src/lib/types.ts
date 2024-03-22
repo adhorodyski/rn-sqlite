@@ -15,3 +15,8 @@ export interface User {
   name: string;
   email: string;
 }
+
+export interface ChatWithLastMessage extends Chat {
+  last_message: string;
+  last_message_author_email: string;
+}

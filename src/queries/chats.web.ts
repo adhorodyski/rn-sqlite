@@ -1,9 +1,4 @@
-import type {Chat} from '../lib/types';
-
-interface ChatWithLastMessage extends Chat {
-  last_message: string;
-  last_message_author_email: string;
-}
+import type {ChatWithLastMessage} from '../lib/types';
 
 export const getRecentChats = async () => {
   return Promise.resolve([
