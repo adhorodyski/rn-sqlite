@@ -6,17 +6,17 @@ class Database extends Dexie {
 
   constructor() {
     super('MyAppDatabase');
-    this.version(1).stores({kv: 'key'});
+    this.version(1).stores({kv: ''});
   }
 }
 
 export const db = new Database();
 
-let insertions: [string, any][] = [];
-
 const MAX_USERS = 100;
 const MAX_CHATS = 100;
 const MAX_MESSAGES = 100;
+
+let insertions: [string, any][] = [];
 
 /**
  * This seeds the database with <MAX_USERS> users.
@@ -54,17 +54,19 @@ for (let y = 0; y < MAX_MESSAGES; y++) {
   ]);
 }
 
+const keys = insertions.map(([key]) => key);
+const values = insertions.map(([, value]) => value);
+
 db.kv
-  .bulkPut(
-    insertions.map(i => i[1]),
-    insertions.map(i => i[0]),
-    {allKeys: true},
-  )
+  .bulkPut(values, keys, {allKeys: true})
   .then(keys => {
     console.log(
       `IndexedDB seeded with ${keys.length} keys:
-    - ${MAX_USERS} users,
-    - ${MAX_CHATS} chats,
-    - ${MAX_MESSAGES} messages`,
+        - ${MAX_USERS} users,
+        - ${MAX_CHATS} chats,
+        - ${MAX_MESSAGES} messages`,
     );
+  })
+  .catch(error => {
+    console.error('Error seeding IndexedDB:', error);
   });
