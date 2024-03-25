@@ -2,7 +2,8 @@ import {db} from '../lib/db.web';
 
 export const getChatMessages = async (chatId: number) => {
   const messages = await db.kv
-    .toCollection()
+    .where(':id')
+    .startsWith('message_')
     .filter(msg => msg.chat_id === chatId)
     .toArray();
 

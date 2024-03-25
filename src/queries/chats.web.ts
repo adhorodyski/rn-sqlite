@@ -2,15 +2,13 @@ import {db} from '../lib/db.web';
 import type {ChatWithLastMessage} from '../lib/types';
 
 export const getRecentChats = async () => {
-  const keys = await db.kv.toCollection().primaryKeys();
-
-  const chatsKeys = keys.filter(key => key.startsWith('chat_'));
-  const chats = await db.kv.bulkGet(chatsKeys);
+  const chats = await db.kv.where(':id').startsWith('chat_').toArray();
 
   const chatsWithLastMessage = await Promise.all(
     chats.map(async chat => {
       const messages = await db.kv
-        .toCollection()
+        .where(':id')
+        .startsWith('message_')
         .filter(msg => msg.chat_id === chat.id)
         .toArray();
 
