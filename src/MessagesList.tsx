@@ -1,6 +1,6 @@
 import {FlatList, Text, TouchableOpacity} from 'react-native';
-import {db} from './lib/db';
 import {useBetas, useChatMessages} from './queries';
+import {setBetas} from './mutations/betas';
 
 interface Props {
   chatId: number;
@@ -18,14 +18,9 @@ export const MessagesList = ({chatId}: Props) => {
         <TouchableOpacity
           key={item.id}
           style={{padding: 16}}
-          onPress={() => {
-            db.execute(
-              `UPDATE kv
-            SET value = ?
-            WHERE key = 'betas'`,
-              [JSON.stringify([...betas.data, item.id])],
-            );
-          }}>
+          onPress={() =>
+            setBetas([`feature-${new Date().getTime().toString()}`])
+          }>
           <Text>
             {item.id}: {item.content}
           </Text>

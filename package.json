@@ -17,6 +17,8 @@
     "@react-navigation/native": "^6.1.9",
     "@react-navigation/native-stack": "^6.9.17",
     "@tanstack/react-query": "^5.17.9",
+    "@tanstack/react-query-devtools": "^5.28.8",
+    "dexie": "^3.2.7",
     "react": "18.2.0",
     "react-dom": "^18.2.0",
     "react-native": "0.73.2",

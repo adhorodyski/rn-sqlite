@@ -8,7 +8,6 @@ export const databaseQueryHook = (
 
   const queries = cache.findAll({type: 'active'});
 
-  // TODO offload equality checks to run on  C++ / worklet / native if it turns out to be ~5x faster than Hermes
   queries.forEach(query => {
     const metaKeys = query.meta?.automaticRevalidationKeys;
 
