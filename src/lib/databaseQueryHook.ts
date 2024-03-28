@@ -11,12 +11,12 @@ export const databaseQueryHook = (
   queries.forEach(query => {
     const metaKeys = query.meta?.automaticRevalidationKeys;
 
-    // exact match against SQLite
+    // not an exact match, bail out
     if (metaKeys === undefined && query.queryKey[0] !== keyChanged) {
       return;
     }
 
-    // custom dependency match
+    // not a custom dependency match, bail out
     if (
       metaKeys !== undefined &&
       !metaKeys.some((key: string) => keyChanged.startsWith(key))
@@ -24,6 +24,7 @@ export const databaseQueryHook = (
       return;
     }
 
+    // match, invalidate
     queryClient.invalidateQueries({queryKey: query.queryKey});
   });
 };
